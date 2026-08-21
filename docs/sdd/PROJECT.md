@@ -31,7 +31,7 @@ RLS: lectura pública en `dishes`/`categories`; escritura solo admin autenticado
 
 ## Módulos
 
-- M01 — Setup del proyecto: IN_PROGRESS
+- M01 — Setup del proyecto: COMPLETED
 - M02 — Landing pública del plato (`/menu/[id]`): PENDING
 - M03 — Autenticación del admin: PENDING
 - M04 — Gestión de platos (CRUD sin 3D): PENDING (depende de M03)
