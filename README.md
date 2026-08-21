@@ -1,36 +1,54 @@
-This is a [Next.js](https://nextjs.org) project bootstrapped with [`create-next-app`](https://nextjs.org/docs/app/api-reference/cli/create-next-app).
+# Bar Sharif — Menu 3D
 
-## Getting Started
+App para el Bar Sharif donde cada plato de la carta tiene un QR que, al escanearse, abre una URL con el plato en 3D interactivo. Un admin único (dueño del bar) carga los platos con sus modelos `.glb` generados en el celular con **RealityScan** (Epic Games, gratis).
 
-First, run the development server:
+## Stack
 
-```bash
-npm run dev
-# or
-yarn dev
-# or
-pnpm dev
-# or
-bun dev
+- **Next.js 16** (App Router, TypeScript)
+- **Tailwind CSS**
+- **Supabase** — Postgres + Auth + Storage
+- **`<model-viewer>`** de Google para el visor 3D (soporta AR nativo en iOS/Android)
+- **`@gltf-transform`** para optimización de `.glb` (Draco + KTX2)
+- **`qrcode`** para generar QRs
+- **Deploy: Vercel**
+
+## Setup local
+
+1. Copiar variables de entorno:
+
+   ```bash
+   cp .env.example .env.local
+   ```
+
+2. Completar `.env.local` con los valores de tu proyecto Supabase (ver
+   [supabase.com/dashboard](https://supabase.com/dashboard)).
+
+3. Instalar dependencias y correr:
+
+   ```bash
+   npm install
+   npm run dev
+   ```
+
+   La app queda en http://localhost:3000
+
+## Estructura
+
+```
+docs/sdd/            # SDDs por módulo (fuente de verdad del diseño)
+  PROJECT.md         # estado de todos los módulos
+src/
+  app/               # rutas Next.js App Router
+  lib/supabase/      # clientes Supabase (browser + server)
+public/              # assets estáticos
 ```
 
-Open [http://localhost:3000](http://localhost:3000) with your browser to see the result.
+## Estado de módulos
 
-You can start editing the page by modifying `app/page.tsx`. The page auto-updates as you edit the file.
+Ver [`docs/sdd/PROJECT.md`](./docs/sdd/PROJECT.md).
 
-This project uses [`next/font`](https://nextjs.org/docs/app/building-your-application/optimizing/fonts) to automatically optimize and load [Geist](https://vercel.com/font), a new font family for Vercel.
+## Metodología
 
-## Learn More
-
-To learn more about Next.js, take a look at the following resources:
-
-- [Next.js Documentation](https://nextjs.org/docs) - learn about Next.js features and API.
-- [Learn Next.js](https://nextjs.org/learn) - an interactive Next.js tutorial.
-
-You can check out [the Next.js GitHub repository](https://github.com/vercel/next.js) - your feedback and contributions are welcome!
-
-## Deploy on Vercel
-
-The easiest way to deploy your Next.js app is to use the [Vercel Platform](https://vercel.com/new?utm_medium=default-template&filter=next.js&utm_source=create-next-app&utm_campaign=create-next-app-readme) from the creators of Next.js.
-
-Check out our [Next.js deployment documentation](https://nextjs.org/docs/app/building-your-application/deploying) for more details.
+Desarrollo guiado por SDDs modulares — cada módulo tiene su `SDD.md` aprobado
+antes de escribir código de negocio. Setup de infra (este módulo M01) es la
+única excepción.
