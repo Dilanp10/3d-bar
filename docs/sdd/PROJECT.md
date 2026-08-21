@@ -32,7 +32,7 @@ RLS: lectura pública en `dishes`/`categories`; escritura solo admin autenticado
 ## Módulos
 
 - M01 — Setup del proyecto: COMPLETED
-- M02 — Landing pública del plato (`/menu/[id]`): AWAITING_APPROVAL
+- M02 — Landing pública del plato (`/menu/[id]`): TESTING (código completo, pendiente infra Supabase real)
 - M03 — Autenticación del admin: PENDING
 - M04 — Gestión de platos (CRUD sin 3D): PENDING (depende de M03)
 - M05 — Upload y optimización de `.glb`: PENDING (depende de M04)

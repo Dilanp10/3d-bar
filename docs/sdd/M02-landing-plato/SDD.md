@@ -3,7 +3,7 @@
 ## 1. Identificación
 Module: M02
 Name: Landing pública del plato (`/menu/[id]`)
-Status: Draft
+Status: Approved
 
 ## 2. Objetivo
 
