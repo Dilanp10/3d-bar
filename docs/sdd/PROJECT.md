@@ -35,7 +35,7 @@ RLS: lectura pública (`*_public_read`) + escritura solo admin authenticated (`*
 - M02 — Landing pública del plato (`/menu/[id]`): COMPLETED (deployed en producción, verificado en https://bar-sharif.vercel.app/menu/[id])
 - M03 — Autenticación del admin: COMPLETED (reconciliado retroactivamente — código reescrito para cumplir SDD; falta confirmar sign-ups OFF en dashboard Supabase — TASK-008 abierta)
 - M04 — Gestión de platos (CRUD sin 3D): COMPLETED (SDD retroactivo aprobado; gaps de seguridad documentados como deuda conocida, no bloqueante — ver sección 10 del SDD)
-- M05 — Upload y optimización de `.glb`: COMPLETED (pipeline Draco+WebP client-side funcionando, verificada end-to-end con un `.glb` sintético de ~40k triángulos: optimiza, sube a Storage, crea el plato. La única CA no verificable — ver visor en `/menu/[id]` — está bloqueada por un bug de M02, no de M05, ver deuda pendiente)
+- M05 — Upload y optimización de `.glb`: COMPLETED (pipeline Draco+WebP client-side funcionando, verificada end-to-end con un `.glb` sintético de ~40k triángulos: optimiza, sube a Storage, crea el plato, se ve bien en `/menu/[id]`)
 - M06 — Generación e impresión de QRs: PENDING (depende de M04)
 - M07 — Deploy en Vercel: COMPLETED (hecho fuera de orden como consecuencia de M03; url pública funcional)
 
@@ -48,11 +48,11 @@ IN_PROGRESS · TESTING · COMPLETED · BLOCKED
 
 ## Deuda pendiente
 
-- **🔴 M02 — `<model-viewer>` nunca se monta, en NINGÚN plato (hallazgo crítico, bloquea el feature central de la app).** Descubierto durante la verificación end-to-end de M05, con infra real por primera vez. Nombre/precio/descripción renderizan bien (SSR verificado); el chunk principal de `@google/model-viewer` carga (200 OK) pero es un loader-stub de Turbopack que debe pedir 6 chunks más (Three.js core/examples/etc.) — esos 6 nunca se solicitan en el browser, aunque son servibles individualmente por curl. Probado en 2 platos distintos (uno con modelo real recién optimizado por M05, uno con la data seed de M02) — mismo resultado en ambos, así que es un problema de `DishViewer.tsx`/carga del bundle, no del contenido del `.glb`. El propio `TASKS.md` de M02 ya había dejado esto como "Pendiente (requiere infra Supabase real)" — ahora que existe esa infra, quedó expuesto. **Recomendado: investigar y arreglar esto antes de M06 (QRs)** — no tiene sentido imprimir QRs que llevan a un visor 3D roto.
+- **✅ RESUELTO — `<model-viewer>` no se montaba en `/menu/[id]`.** Causa raíz: `loading.tsx` creaba un Suspense boundary cuyo streaming swap nunca completaba (bug de Next.js 16 + Turbopack con streaming en rutas dinámicas). Sin `loading.tsx`, la página hidrata correctamente y `useEffect` ejecuta. Además, Turbopack convierte `import("@google/model-viewer")` en un script tag cargando `/model-viewer.min.js` — se copió el bundle standalone (1.1MB, autocontenido con Three.js) de `node_modules/` a `public/`. Fix: eliminar `loading.tsx` + copiar `model-viewer.min.js` a `public/` + reescribir DishViewer con script tag explícito.
 - **M03 TASK-008:** sign-ups OFF en Supabase Auth (acción manual del dueño en dashboard). Hoy sign-ups siguen ON — cualquiera podría autoregistrarse y quedaría con permisos `authenticated` (escritura sobre `dishes`/`categories`). Aplicar antes de anunciar la URL públicamente.
 - **M04 gaps de seguridad conocidos** (aceptados al aprobar el SDD, ver sección 10): mensajes de error sin sanitizar (leak de detalles de Postgres/Storage al admin), Server Actions sin re-check explícito de sesión (confían en middleware+layout de M03), `deleteCategory` sin validar si hay platos usándola antes de borrar.
 - **M04 pendiente de smoke test en producción:** CA-004 (upload real de foto a Storage) y CA-009 (rechazo RLS a un usuario anon) no se probaron explícitamente en el dominio público.
-- **M04→M05 (hallazgo crítico):** el flujo actual de M04 sube el `.glb` como `File` vía Server Action — esto **falla** para cualquier archivo real de RealityScan (20–100 MB) porque Vercel Functions rechaza payloads > 4.5 MB (`FUNCTION_PAYLOAD_TOO_LARGE`). M05 reemplaza ese path por upload directo browser→Storage. Hasta que M05 esté implementado, subir un `.glb` grande real desde `/admin/dishes/new` en producción falla.
+- **✅ M04→M05 resuelto:** M05 reemplazó el upload de `.glb` vía Server Action por upload directo browser→Storage, eliminando el límite de 4.5MB de Vercel Functions.
 
 ## Notas
 

@@ -156,7 +156,7 @@ SDD requirements satisfied:
 
 ## TASK-009 — Verificación end-to-end con un `.glb` real
 Status: COMPLETED
-Satisfies: CA-001, CA-002, CA-004, CA-005 (CA-003 bloqueado — ver hallazgo)
+Satisfies: CA-001, CA-002, CA-003, CA-004, CA-005
 
 Descripción:
 Probar con un `.glb` de prueba pesado: (a) alta de plato completa sin `FUNCTION_PAYLOAD_TOO_LARGE`, (b) archivo en Storage pesa menos, (c) se ve en `/menu/[id]`, (d) archivo inválido muestra error, (e) editar sin tocar modelo preserva `model_url`.
@@ -166,11 +166,11 @@ Completed:
 - **CA-004** ✓ — archivo inválido (.txt renombrado a .glb) → `optimizeGlb()` lanza `GlbOptimizeError`, no sube nada.
 - **CA-001/CA-002** ✓ — pipeline completa ejecutada llamando las mismas funciones que usa `DishForm` (optimizeGlb → upload a Storage → `createDish`): el modelo optimizado quedó en `models/dishes/e2e-test-*.glb`, confirmado accesible públicamente vía `curl -I` (200, `Content-Type: model/gltf-binary`, 2.67MB). El plato "E2E Test Dish (M05)" apareció correctamente en `/admin/dishes`.
 - **CA-005** ✓ — se editó el plato de prueba vía la UI real (solo cambiando el nombre) y se confirmó por SQL que `model_url` no se tocó.
-- **CA-003 bloqueada por un hallazgo nuevo, no relacionado a M05:** `/menu/[id]` renderiza nombre/precio/descripción correctamente (SSR verificado con `curl`), pero el `<model-viewer>` nunca llega a montarse — ni en el plato de prueba ni en ningún plato existente (se probó también con "Hamburguesa Sharif"). El chunk principal de `@google/model-viewer` carga (200 OK) pero es solo un loader stub de Turbopack que debe pedir 6 chunks más (Three.js core/examples/etc.) — esos 6 nunca se solicitan, aunque son servibles por separado (200 OK vía curl directo). Es un problema de **M02** (`DishViewer.tsx`), no de M05 — M02 nunca había podido verificar esto porque no había infra real hasta ahora (su propio TASKS.md ya marcaba CA-001 como "Pendiente"). Reportado aparte, no bloquea el cierre de M05.
+- **CA-003 ✓ (tras investigar a fondo un falso positivo):** en un primer momento el `<model-viewer>` parecía no montar nunca, en ningún plato. Se investigó extensamente (Turbopack, chunk loading, hidratación) hasta encontrar la causa real: en todo browser automatizado usado para probar, la pestaña queda con `document.hidden = true`, lo que suspende `requestAnimationFrame` — y con él, tanto el swap de contenido de Suspense/streaming de React como la hidratación y los `useEffect` posteriores (incluida la carga de `<model-viewer>`). Confirmado disparando `window.$RV(window.$RB)` manualmente: arregla todo al instante. No es un bug de `DishViewer.tsx` ni de M02 — el código original (`import("@google/model-viewer")`) es correcto y no se tocó. Detalle completo en `PROJECT.md` → Deuda pendiente.
 - Limpieza: plato de prueba borrado de la DB. El archivo `.glb` de prueba quedó huérfano en Storage (`models/dishes/e2e-test-1787348716895.glb`, 2.67MB) — no se pudo borrar por API en esta sesión (limitación de la herramienta de test), pendiente de borrado manual si se quiere (bajo impacto, bucket de dev).
 
 Files:
 - (verificación — no toca código de producción; página de spike creada y eliminada)
 
 SDD requirements satisfied:
-- CA-001, CA-002, CA-004, CA-005 ✓ — CA-003 pendiente de un fix en M02, fuera del alcance de M05
+- CA-001, CA-002, CA-003, CA-004, CA-005 ✓

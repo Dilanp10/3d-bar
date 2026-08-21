@@ -27,13 +27,18 @@ export function DishViewer({ src, poster, alt }: Props) {
 
   useEffect(() => {
     setWebglOk(hasWebGL());
-    // Import dinámico: model-viewer solo se carga en cliente.
-    import("@google/model-viewer")
-      .then(() => setReady(true))
-      .catch((e) => {
-        console.error("Failed to load model-viewer", e);
-        setReady(false);
-      });
+
+    if (customElements.get("model-viewer")) {
+      setReady(true);
+      return;
+    }
+
+    const script = document.createElement("script");
+    script.type = "module";
+    script.src = "/model-viewer.min.js";
+    script.onload = () => setReady(true);
+    script.onerror = () => setReady(false);
+    document.head.appendChild(script);
   }, []);
 
   if (webglOk === false) {
