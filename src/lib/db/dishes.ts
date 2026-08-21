@@ -18,25 +18,30 @@ export type Dish = {
 
 const uuidSchema = z.string().uuid();
 
-export async function getDishById(id: string): Promise<Dish | null> {
+export async function getDishById(
+  id: string,
+  { activeOnly = true }: { activeOnly?: boolean } = {},
+): Promise<Dish | null> {
   const parsed = uuidSchema.safeParse(id);
   if (!parsed.success) return null;
 
   const supabase = await createClient();
 
-  const { data, error } = await supabase
+  let query = supabase
     .from("dishes")
     .select(
       "id, name, description, price, category_id, photo_url, model_url, thumbnail_url, sort_order, active, created_at, category:categories(name)",
     )
-    .eq("id", parsed.data)
-    .eq("active", true)
-    .maybeSingle();
+    .eq("id", parsed.data);
+
+  if (activeOnly) {
+    query = query.eq("active", true);
+  }
+
+  const { data, error } = await query.maybeSingle();
 
   if (error || !data) return null;
 
-  // Supabase devuelve `category` como array si la relación FK no está explícita;
-  // normalizamos a objeto o null.
   const category = Array.isArray(data.category)
     ? (data.category[0] ?? null)
     : (data.category ?? null);

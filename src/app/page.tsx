@@ -13,7 +13,7 @@ export default function Home() {
           ángulos antes de pedirlo.
         </p>
         <p className="text-foreground-dim text-sm">
-          (Panel de administración: próximamente)
+          Administración: <a href="/admin" className="text-accent hover:text-accent-hover transition-colors underline underline-offset-2">panel admin</a>
         </p>
       </div>
     </main>
