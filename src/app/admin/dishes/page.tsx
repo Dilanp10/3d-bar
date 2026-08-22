@@ -15,12 +15,20 @@ export default async function DishesPage() {
     <div>
       <div className="flex items-center justify-between mb-6">
         <h1 className="text-2xl font-semibold text-foreground">Platos</h1>
-        <Link
-          href="/admin/dishes/new"
-          className="rounded-lg bg-accent text-black font-medium px-4 py-2 text-sm hover:bg-accent-hover transition-colors"
-        >
-          + Nuevo plato
-        </Link>
+        <div className="flex items-center gap-2">
+          <Link
+            href="/admin/qrs/print"
+            className="rounded-lg border border-border text-foreground px-4 py-2 text-sm hover:bg-background-elevated transition-colors"
+          >
+            Imprimir todos los QRs
+          </Link>
+          <Link
+            href="/admin/dishes/new"
+            className="rounded-lg bg-accent text-black font-medium px-4 py-2 text-sm hover:bg-accent-hover transition-colors"
+          >
+            + Nuevo plato
+          </Link>
+        </div>
       </div>
 
       <div className="rounded-xl border border-border overflow-hidden">
@@ -54,7 +62,7 @@ export default async function DishesPage() {
                     />
                   </td>
                   <td className="px-4 py-3 text-right">
-                    <DishActions id={dish.id} active={dish.active} />
+                    <DishActions id={dish.id} name={dish.name} active={dish.active} />
                   </td>
                 </tr>
               );

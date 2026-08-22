@@ -3,6 +3,7 @@ import { notFound } from "next/navigation";
 import { createClient } from "@/lib/supabase/server";
 import { getDishById } from "@/lib/db/dishes";
 import { DishForm } from "../../DishForm";
+import { QrBlock } from "../../QrBlock";
 import { updateDish } from "../../actions";
 
 export default async function EditDishPage({
@@ -36,7 +37,15 @@ export default async function EditDishPage({
       <h1 className="text-2xl font-semibold text-foreground mt-3 mb-6">
         Editar: {dish.name}
       </h1>
-      <DishForm dish={dish} categories={categories ?? []} action={boundUpdate} />
+      <div className="grid grid-cols-1 lg:grid-cols-[1fr_auto] gap-8 items-start">
+        <DishForm dish={dish} categories={categories ?? []} action={boundUpdate} />
+        <aside className="rounded-xl border border-border p-4 lg:sticky lg:top-4">
+          <h2 className="text-sm font-medium text-foreground-muted mb-3">
+            QR del plato
+          </h2>
+          <QrBlock dishId={dish.id} dishName={dish.name} size={240} />
+        </aside>
+      </div>
     </div>
   );
 }

@@ -2,10 +2,20 @@
 
 import Link from "next/link";
 import { toggleDishActive, deleteDish } from "./actions";
+import { QrButton } from "./QrButton";
 
-export function DishActions({ id, active }: { id: string; active: boolean }) {
+export function DishActions({
+  id,
+  name,
+  active,
+}: {
+  id: string;
+  name: string;
+  active: boolean;
+}) {
   return (
     <div className="flex items-center justify-end gap-2">
+      <QrButton id={id} name={name} />
       <button
         onClick={() => toggleDishActive(id, !active)}
         className="text-xs text-foreground-muted hover:text-foreground transition-colors"
