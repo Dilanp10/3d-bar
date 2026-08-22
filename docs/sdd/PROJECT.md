@@ -40,6 +40,8 @@ RLS: lectura pública (`*_public_read`) + escritura solo admin authenticated (`*
 - M07 — Deploy en Vercel: COMPLETED (hecho fuera de orden como consecuencia de M03; url pública funcional)
 - M08 — Hardening del admin (deuda post-MVP): COMPLETED (`requireAdmin()` protege todas las Server Actions mutantes; `sanitizeActionError()` traduce errores de Supabase a mensajes humanos y loguea el detalle server-side; banner en admin detecta y avisa si los sign-ups de Supabase siguen abiertos. CA-001 verificado en vivo: click sin sesión no muta la DB)
 - M09 — Analytics de escaneos: COMPLETED (deployado a producción — dashboard `/admin/analytics` verificado en https://bar-sharif.vercel.app mostrando datos reales de `dish_views`: 3 escaneos del 22/08, tabla con los 4 platos)
+- M10 — Vista pública del menú completo (`/menu`): TESTING (implementado y verificado en dev; falta redeploy a producción)
+- M11 — Landing page renovada (`/`): DISCOVERY — info del bar (dirección/horarios/teléfono), hero visual, redes sociales, preview de platos destacados. Esperando datos reales del bar (no se inventan datos de negocio)
 
 ## Estados válidos
 

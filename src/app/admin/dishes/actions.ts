@@ -69,6 +69,7 @@ export async function createDish(formData: FormData) {
 
   revalidatePath("/admin/dishes");
   revalidatePath("/");
+  revalidatePath("/menu");
   redirect("/admin/dishes");
 }
 
@@ -119,6 +120,7 @@ export async function updateDish(id: string, formData: FormData) {
   revalidatePath("/admin/dishes");
   revalidatePath(`/menu/${id}`);
   revalidatePath("/");
+  revalidatePath("/menu");
   redirect("/admin/dishes");
 }
 
@@ -137,6 +139,7 @@ export async function deleteDish(id: string) {
 
   revalidatePath("/admin/dishes");
   revalidatePath("/");
+  revalidatePath("/menu");
 }
 
 export async function toggleDishActive(id: string, active: boolean) {
@@ -158,4 +161,5 @@ export async function toggleDishActive(id: string, active: boolean) {
   revalidatePath("/admin/dishes");
   revalidatePath(`/menu/${id}`);
   revalidatePath("/");
+  revalidatePath("/menu");
 }

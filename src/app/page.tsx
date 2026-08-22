@@ -12,6 +12,12 @@ export default function Home() {
           Escaneá el QR de cualquier plato de la mesa para verlo desde todos los
           ángulos antes de pedirlo.
         </p>
+        <a
+          href="/menu"
+          className="rounded-lg bg-accent text-black font-medium px-5 py-2.5 text-sm hover:bg-accent-hover transition-colors"
+        >
+          Ver la carta completa
+        </a>
         <p className="text-foreground-dim text-sm">
           Administración: <a href="/admin" className="text-accent hover:text-accent-hover transition-colors underline underline-offset-2">panel admin</a>
         </p>
