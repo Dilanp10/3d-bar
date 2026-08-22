@@ -39,7 +39,7 @@ RLS: lectura pública (`*_public_read`) + escritura solo admin authenticated (`*
 - M06 — Generación e impresión de QRs: COMPLETED (deployado a https://bar-sharif.vercel.app; CA-008 verificado — la env `NEXT_PUBLIC_APP_URL` está seteada y el `og:url` del `/menu/[id]` en producción usa el dominio correcto, misma fuente que alimenta los QRs. `/admin/qrs/print` protegida por middleware — devuelve 307 a /admin/login sin sesión. Escaneo físico con móvil pendiente como validación humana opcional, no bloqueante técnicamente)
 - M07 — Deploy en Vercel: COMPLETED (hecho fuera de orden como consecuencia de M03; url pública funcional)
 - M08 — Hardening del admin (deuda post-MVP): COMPLETED (`requireAdmin()` protege todas las Server Actions mutantes; `sanitizeActionError()` traduce errores de Supabase a mensajes humanos y loguea el detalle server-side; banner en admin detecta y avisa si los sign-ups de Supabase siguen abiertos. CA-001 verificado en vivo: click sin sesión no muta la DB)
-- M09 — Analytics de escaneos: TESTING (implementado y verificado en dev; tabla `dish_views` en Supabase con RLS, endpoint `/api/track-view`, dashboard en `/admin/analytics` con top platos + gráfico de barras por día. Falta redeploy a producción)
+- M09 — Analytics de escaneos: COMPLETED (deployado a producción — dashboard `/admin/analytics` verificado en https://bar-sharif.vercel.app mostrando datos reales de `dish_views`: 3 escaneos del 22/08, tabla con los 4 platos)
 
 ## Estados válidos
 
@@ -51,7 +51,7 @@ IN_PROGRESS · TESTING · COMPLETED · BLOCKED
 ## Deuda pendiente
 
 - **✅ RESUELTO — `<model-viewer>` no se montaba en `/menu/[id]`.** Causa raíz: `loading.tsx` creaba un Suspense boundary cuyo streaming swap nunca completaba (bug de Next.js 16 + Turbopack con streaming en rutas dinámicas). Sin `loading.tsx`, la página hidrata correctamente y `useEffect` ejecuta. Además, Turbopack convierte `import("@google/model-viewer")` en un script tag cargando `/model-viewer.min.js` — se copió el bundle standalone (1.1MB, autocontenido con Three.js) de `node_modules/` a `public/`. Fix: eliminar `loading.tsx` + copiar `model-viewer.min.js` a `public/` + reescribir DishViewer con script tag explícito.
-- **M03 TASK-008:** sign-ups OFF en Supabase Auth (acción manual del dueño en dashboard). Hoy sign-ups siguen ON — cualquiera podría autoregistrarse y quedaría con permisos `authenticated` (escritura sobre `dishes`/`categories`). Aplicar antes de anunciar la URL públicamente.
+- **M03 TASK-008:** sign-ups OFF en Supabase Auth (acción manual del dueño en dashboard). Hoy sign-ups siguen ON — cualquiera podría autoregistrarse y quedaría con permisos `authenticated` (escritura sobre `dishes`/`categories`). Aplicar antes de anunciar la URL públicamente. **El banner de M08 ya está confirmado visible en producción** (`/admin/dishes` y `/admin/analytics`) recordando esta acción — desaparece solo cuando dilan lo desactive en el dashboard de Supabase.
 - ~~**M04 gaps de seguridad conocidos**~~ ✅ **resuelto en M08:** mensajes sanitizados por `sanitizeActionError`, `requireAdmin()` como defense-in-depth en Server Actions, `deleteCategory` con guard de categoría-en-uso, banner de sign-ups en admin.
 - **M04 pendiente de smoke test en producción:** CA-004 (upload real de foto a Storage) y CA-009 (rechazo RLS a un usuario anon) no se probaron explícitamente en el dominio público.
 - **✅ M04→M05 resuelto:** M05 reemplazó el upload de `.glb` vía Server Action por upload directo browser→Storage, eliminando el límite de 4.5MB de Vercel Functions.
