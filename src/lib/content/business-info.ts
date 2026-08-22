@@ -12,4 +12,4 @@ export const INSTAGRAM_HANDLE = "@bar.sharif";
 export const INSTAGRAM_URL = "https://instagram.com/bar.sharif";
 export const MAPS_URL = `https://www.google.com/maps/search/?api=1&query=${encodeURIComponent(ADDRESS)}`;
 export const HERO_IMAGE_URL =
-  "https://images.unsplash.com/photo-1514933651103-005eec06c04b?w=1600";
+  "https://images.unsplash.com/photo-1517248135467-4c7edcad34c4?w=1920&q=80";

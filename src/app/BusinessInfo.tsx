@@ -34,7 +34,7 @@ const IconInstagram = () => (
   </svg>
 );
 
-function InfoRow({
+function InfoCard({
   icon,
   label,
   value,
@@ -45,13 +45,13 @@ function InfoRow({
   value: string;
   href?: string;
 }) {
-  const content = (
-    <div className="flex items-start gap-4">
+  const inner = (
+    <div className="rounded-2xl border border-border bg-background-elevated/50 p-5 h-full hover:border-border-strong transition-colors flex flex-col items-start gap-3">
       <div className="w-10 h-10 rounded-full bg-accent/10 border border-accent/20 grid place-items-center text-accent shrink-0">
         {icon}
       </div>
       <div className="min-w-0">
-        <p className="text-[11px] uppercase tracking-[0.2em] text-foreground-dim mb-0.5">
+        <p className="text-[10px] uppercase tracking-[0.2em] text-foreground-dim mb-1">
           {label}
         </p>
         <p className="text-sm text-foreground leading-snug break-words">
@@ -61,15 +61,15 @@ function InfoRow({
     </div>
   );
 
-  if (!href) return content;
+  if (!href) return inner;
   return (
     <a
       href={href}
       target="_blank"
       rel="noopener noreferrer"
-      className="block group transition-transform hover:-translate-y-0.5"
+      className="block h-full group transition-transform hover:-translate-y-0.5"
     >
-      {content}
+      {inner}
     </a>
   );
 }
@@ -78,23 +78,23 @@ export function BusinessInfo() {
   return (
     <section
       id="visitanos"
-      className="relative px-6 sm:px-8 py-24 max-w-5xl mx-auto w-full"
+      className="relative px-6 sm:px-10 lg:px-16 py-20 sm:py-28 max-w-6xl mx-auto w-full"
     >
-      <div className="mb-12 text-center">
+      <div className="mb-10 sm:mb-12 max-w-2xl">
         <span className="text-[11px] uppercase tracking-[0.25em] text-accent-dim">
           Visitanos
         </span>
-        <h2 className="text-3xl sm:text-4xl font-semibold text-foreground mt-3">
+        <h2 className="text-3xl sm:text-4xl lg:text-5xl font-semibold text-foreground mt-3 leading-tight">
           Te esperamos en{" "}
           <span className="italic font-normal text-accent">{BUSINESS_NAME}</span>
         </h2>
       </div>
 
-      <div className="grid grid-cols-1 sm:grid-cols-2 gap-6 sm:gap-8 max-w-2xl mx-auto">
-        <InfoRow icon={<IconPin />} label="Dirección" value={ADDRESS} href={MAPS_URL} />
-        <InfoRow icon={<IconClock />} label="Horario" value={HOURS} />
-        <InfoRow icon={<IconWhatsApp />} label="WhatsApp" value={PHONE_DISPLAY} href={WHATSAPP_URL} />
-        <InfoRow icon={<IconInstagram />} label="Instagram" value={INSTAGRAM_HANDLE} href={INSTAGRAM_URL} />
+      <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-4 sm:gap-5">
+        <InfoCard icon={<IconPin />} label="Dirección" value={ADDRESS} href={MAPS_URL} />
+        <InfoCard icon={<IconClock />} label="Horario" value={HOURS} />
+        <InfoCard icon={<IconWhatsApp />} label="WhatsApp" value={PHONE_DISPLAY} href={WHATSAPP_URL} />
+        <InfoCard icon={<IconInstagram />} label="Instagram" value={INSTAGRAM_HANDLE} href={INSTAGRAM_URL} />
       </div>
     </section>
   );

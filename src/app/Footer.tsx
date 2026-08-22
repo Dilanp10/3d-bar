@@ -4,7 +4,7 @@ export function Footer() {
   const year = new Date().getFullYear();
   return (
     <footer className="relative mt-8 border-t border-border">
-      <div className="max-w-5xl mx-auto px-6 sm:px-8 py-8 flex flex-col sm:flex-row items-center justify-between gap-3 text-xs text-foreground-dim">
+      <div className="max-w-6xl mx-auto px-6 sm:px-10 lg:px-16 py-8 flex flex-col sm:flex-row items-center justify-between gap-3 text-xs text-foreground-dim">
         <p>
           © {year} {BUSINESS_NAME}. La carta en 3D.
         </p>
