@@ -3,6 +3,8 @@
 import { revalidatePath } from "next/cache";
 import { redirect } from "next/navigation";
 import { createClient } from "@/lib/supabase/server";
+import { requireAdmin } from "@/lib/auth/require-admin";
+import { sanitizeActionError } from "@/lib/errors/sanitize";
 
 async function uploadFile(
   supabase: Awaited<ReturnType<typeof createClient>>,
@@ -26,6 +28,12 @@ async function uploadFile(
 export async function createDish(formData: FormData) {
   const supabase = await createClient();
 
+  try {
+    await requireAdmin(supabase);
+  } catch (e) {
+    return { error: sanitizeActionError(e) };
+  }
+
   const name = formData.get("name") as string;
   const description = (formData.get("description") as string) || null;
   const price = Number(formData.get("price"));
@@ -39,7 +47,11 @@ export async function createDish(formData: FormData) {
   let photoUrl: string | null = null;
 
   if (photoFile && photoFile.size > 0) {
-    photoUrl = await uploadFile(supabase, "photos", photoFile, "dishes");
+    try {
+      photoUrl = await uploadFile(supabase, "photos", photoFile, "dishes");
+    } catch (e) {
+      return { error: sanitizeActionError(e) };
+    }
   }
 
   const { error } = await supabase.from("dishes").insert({
@@ -53,7 +65,7 @@ export async function createDish(formData: FormData) {
     model_url: modelUrl,
   });
 
-  if (error) return { error: error.message };
+  if (error) return { error: sanitizeActionError(error) };
 
   revalidatePath("/admin/dishes");
   revalidatePath("/");
@@ -62,6 +74,12 @@ export async function createDish(formData: FormData) {
 
 export async function updateDish(id: string, formData: FormData) {
   const supabase = await createClient();
+
+  try {
+    await requireAdmin(supabase);
+  } catch (e) {
+    return { error: sanitizeActionError(e) };
+  }
 
   const name = formData.get("name") as string;
   const description = (formData.get("description") as string) || null;
@@ -83,7 +101,11 @@ export async function updateDish(id: string, formData: FormData) {
   const modelUrl = formData.get("model_url") as string | null;
 
   if (photoFile && photoFile.size > 0) {
-    updates.photo_url = await uploadFile(supabase, "photos", photoFile, "dishes");
+    try {
+      updates.photo_url = await uploadFile(supabase, "photos", photoFile, "dishes");
+    } catch (e) {
+      return { error: sanitizeActionError(e) };
+    }
   }
 
   if (modelUrl) {
@@ -92,7 +114,7 @@ export async function updateDish(id: string, formData: FormData) {
 
   const { error } = await supabase.from("dishes").update(updates).eq("id", id);
 
-  if (error) return { error: error.message };
+  if (error) return { error: sanitizeActionError(error) };
 
   revalidatePath("/admin/dishes");
   revalidatePath(`/menu/${id}`);
@@ -102,9 +124,16 @@ export async function updateDish(id: string, formData: FormData) {
 
 export async function deleteDish(id: string) {
   const supabase = await createClient();
+
+  try {
+    await requireAdmin(supabase);
+  } catch (e) {
+    return { error: sanitizeActionError(e) };
+  }
+
   const { error } = await supabase.from("dishes").delete().eq("id", id);
 
-  if (error) return { error: error.message };
+  if (error) return { error: sanitizeActionError(error) };
 
   revalidatePath("/admin/dishes");
   revalidatePath("/");
@@ -112,12 +141,19 @@ export async function deleteDish(id: string) {
 
 export async function toggleDishActive(id: string, active: boolean) {
   const supabase = await createClient();
+
+  try {
+    await requireAdmin(supabase);
+  } catch (e) {
+    return { error: sanitizeActionError(e) };
+  }
+
   const { error } = await supabase
     .from("dishes")
     .update({ active })
     .eq("id", id);
 
-  if (error) return { error: error.message };
+  if (error) return { error: sanitizeActionError(error) };
 
   revalidatePath("/admin/dishes");
   revalidatePath(`/menu/${id}`);
