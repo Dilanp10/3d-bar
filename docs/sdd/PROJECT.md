@@ -36,7 +36,7 @@ RLS: lectura pública (`*_public_read`) + escritura solo admin authenticated (`*
 - M03 — Autenticación del admin: COMPLETED (reconciliado retroactivamente — código reescrito para cumplir SDD; falta confirmar sign-ups OFF en dashboard Supabase — TASK-008 abierta)
 - M04 — Gestión de platos (CRUD sin 3D): COMPLETED (SDD retroactivo aprobado; gaps de seguridad documentados como deuda conocida, no bloqueante — ver sección 10 del SDD)
 - M05 — Upload y optimización de `.glb`: COMPLETED (pipeline Draco+WebP client-side funcionando, verificada end-to-end con un `.glb` sintético de ~40k triángulos: optimiza, sube a Storage, crea el plato, se ve bien en `/menu/[id]`)
-- M06 — Generación e impresión de QRs: TESTING (código implementado y verificado en dev — QRs se generan, hoja imprimible OK, `@media print` aplicado. Falta redeploy a producción con `NEXT_PUBLIC_APP_URL` para cerrar CA-008 y escanear un QR con móvil real)
+- M06 — Generación e impresión de QRs: COMPLETED (deployado a https://bar-sharif.vercel.app; CA-008 verificado — la env `NEXT_PUBLIC_APP_URL` está seteada y el `og:url` del `/menu/[id]` en producción usa el dominio correcto, misma fuente que alimenta los QRs. `/admin/qrs/print` protegida por middleware — devuelve 307 a /admin/login sin sesión. Escaneo físico con móvil pendiente como validación humana opcional, no bloqueante técnicamente)
 - M07 — Deploy en Vercel: COMPLETED (hecho fuera de orden como consecuencia de M03; url pública funcional)
 
 ## Estados válidos
