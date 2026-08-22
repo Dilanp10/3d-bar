@@ -41,7 +41,7 @@ RLS: lectura pública (`*_public_read`) + escritura solo admin authenticated (`*
 - M08 — Hardening del admin (deuda post-MVP): COMPLETED (`requireAdmin()` protege todas las Server Actions mutantes; `sanitizeActionError()` traduce errores de Supabase a mensajes humanos y loguea el detalle server-side; banner en admin detecta y avisa si los sign-ups de Supabase siguen abiertos. CA-001 verificado en vivo: click sin sesión no muta la DB)
 - M09 — Analytics de escaneos: COMPLETED (deployado a producción — dashboard `/admin/analytics` verificado en https://bar-sharif.vercel.app mostrando datos reales de `dish_views`: 3 escaneos del 22/08, tabla con los 4 platos)
 - M10 — Vista pública del menú completo (`/menu`): TESTING (implementado y verificado en dev; falta redeploy a producción)
-- M11 — Landing page renovada (`/`): DISCOVERY — info del bar (dirección/horarios/teléfono), hero visual, redes sociales, preview de platos destacados. Esperando datos reales del bar (no se inventan datos de negocio)
+- M11 — Landing page renovada (`/`): TESTING (implementado y verificado en dev con datos **ficticios** por pedido explícito del usuario — ver deuda pendiente. Falta redeploy a producción)
 
 ## Estados válidos
 
@@ -51,6 +51,8 @@ IN_PROGRESS · TESTING · COMPLETED · BLOCKED
 ```
 
 ## Deuda pendiente
+
+- **🔴 M11 usa datos FICTICIOS del negocio:** dirección, horario, teléfono/WhatsApp e Instagram en `src/lib/content/business-info.ts` son inventados (pedido explícito del usuario, no había datos reales disponibles al momento de construir M11). **Reemplazar antes de anunciar la URL públicamente** — el archivo tiene un comentario `⚠️⚠️⚠️ PLACEHOLDER` bien visible al inicio recordándolo.
 
 - **✅ RESUELTO — `<model-viewer>` no se montaba en `/menu/[id]`.** Causa raíz: `loading.tsx` creaba un Suspense boundary cuyo streaming swap nunca completaba (bug de Next.js 16 + Turbopack con streaming en rutas dinámicas). Sin `loading.tsx`, la página hidrata correctamente y `useEffect` ejecuta. Además, Turbopack convierte `import("@google/model-viewer")` en un script tag cargando `/model-viewer.min.js` — se copió el bundle standalone (1.1MB, autocontenido con Three.js) de `node_modules/` a `public/`. Fix: eliminar `loading.tsx` + copiar `model-viewer.min.js` a `public/` + reescribir DishViewer con script tag explícito.
 - **M03 TASK-008:** sign-ups OFF en Supabase Auth (acción manual del dueño en dashboard). Hoy sign-ups siguen ON — cualquiera podría autoregistrarse y quedaría con permisos `authenticated` (escritura sobre `dishes`/`categories`). Aplicar antes de anunciar la URL públicamente. **El banner de M08 ya está confirmado visible en producción** (`/admin/dishes` y `/admin/analytics`) recordando esta acción — desaparece solo cuando dilan lo desactive en el dashboard de Supabase.
