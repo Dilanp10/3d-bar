@@ -5,6 +5,7 @@ import { getDishById } from "@/lib/db/dishes";
 import { DishInfo } from "./DishInfo";
 import { DishViewer } from "./DishViewer";
 import { InstallPWAButton } from "./InstallPWAButton";
+import { TrackView } from "./TrackView";
 
 type Params = { id: string };
 
@@ -93,6 +94,7 @@ export default async function DishPage({
       <DishInfo dish={dish} />
 
       <InstallPWAButton />
+      <TrackView dishId={dish.id} />
     </main>
   );
 }

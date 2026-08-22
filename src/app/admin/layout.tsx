@@ -40,6 +40,12 @@ export default async function AdminLayout({
             >
               Categorías
             </Link>
+            <Link
+              href="/admin/analytics"
+              className="text-foreground-muted hover:text-foreground transition-colors"
+            >
+              Analytics
+            </Link>
           </div>
           <div className="ml-auto">
             <LogoutButton />

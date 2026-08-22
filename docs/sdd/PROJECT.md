@@ -39,6 +39,7 @@ RLS: lectura pública (`*_public_read`) + escritura solo admin authenticated (`*
 - M06 — Generación e impresión de QRs: COMPLETED (deployado a https://bar-sharif.vercel.app; CA-008 verificado — la env `NEXT_PUBLIC_APP_URL` está seteada y el `og:url` del `/menu/[id]` en producción usa el dominio correcto, misma fuente que alimenta los QRs. `/admin/qrs/print` protegida por middleware — devuelve 307 a /admin/login sin sesión. Escaneo físico con móvil pendiente como validación humana opcional, no bloqueante técnicamente)
 - M07 — Deploy en Vercel: COMPLETED (hecho fuera de orden como consecuencia de M03; url pública funcional)
 - M08 — Hardening del admin (deuda post-MVP): COMPLETED (`requireAdmin()` protege todas las Server Actions mutantes; `sanitizeActionError()` traduce errores de Supabase a mensajes humanos y loguea el detalle server-side; banner en admin detecta y avisa si los sign-ups de Supabase siguen abiertos. CA-001 verificado en vivo: click sin sesión no muta la DB)
+- M09 — Analytics de escaneos: TESTING (implementado y verificado en dev; tabla `dish_views` en Supabase con RLS, endpoint `/api/track-view`, dashboard en `/admin/analytics` con top platos + gráfico de barras por día. Falta redeploy a producción)
 
 ## Estados válidos
 
