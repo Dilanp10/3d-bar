@@ -1,46 +1,75 @@
 import Image from "next/image";
-import { HERO_IMAGE_URL } from "@/lib/content/business-info";
+import { HERO_IMAGE_URL, BUSINESS_NAME } from "@/lib/content/business-info";
 
 export function HeroSection() {
   return (
-    <section className="relative min-h-[70dvh] flex items-center justify-center px-6 text-center overflow-hidden">
+    <section className="relative min-h-[100dvh] flex flex-col items-center justify-center px-6 text-center overflow-hidden">
       <Image
         src={HERO_IMAGE_URL}
         alt=""
         fill
         priority
         sizes="100vw"
-        className="object-cover"
+        className="object-cover scale-105 fade-in"
       />
-      <div className="absolute inset-0 bg-gradient-to-b from-black/70 via-black/60 to-black" />
+      {/* Radial + linear overlay for depth */}
+      <div
+        aria-hidden
+        className="absolute inset-0"
+        style={{
+          background:
+            "radial-gradient(ellipse at center, rgba(0,0,0,0.35) 0%, rgba(0,0,0,0.75) 55%, #0a0a0a 100%)",
+        }}
+      />
+      <div
+        aria-hidden
+        className="absolute inset-0 bg-gradient-to-b from-black/40 via-transparent to-background"
+      />
 
-      <div className="relative max-w-md flex flex-col items-center gap-6">
-        <span className="text-xs uppercase tracking-[0.3em] text-accent">
-          Bar Sharif
-        </span>
-        <h1 className="text-4xl sm:text-5xl font-semibold leading-tight text-white">
-          La carta, en 3D.
+      <div className="relative max-w-2xl flex flex-col items-center gap-7 pb-16">
+        <div className="fade-up flex items-center gap-2 rounded-full border border-accent/30 bg-black/40 backdrop-blur-sm px-4 py-1.5">
+          <span className="w-1.5 h-1.5 rounded-full bg-accent animate-pulse" />
+          <span className="text-[11px] uppercase tracking-[0.25em] text-accent">
+            {BUSINESS_NAME}
+          </span>
+        </div>
+
+        <h1 className="fade-up delay-100 text-5xl sm:text-7xl font-semibold leading-[1.05] text-white tracking-tight">
+          La carta,
+          <br />
+          <span className="italic font-normal text-accent">en 3D.</span>
         </h1>
-        <p className="text-white/80 leading-relaxed">
-          Escaneá el QR de cualquier plato de la mesa para verlo desde todos
-          los ángulos antes de pedirlo.
+
+        <p className="fade-up delay-200 text-white/70 leading-relaxed text-lg max-w-md">
+          Escaneá el QR de cualquier plato y mirá exactamente lo que vas a
+          pedir, desde todos los ángulos.
         </p>
-        <a
-          href="/menu"
-          className="rounded-lg bg-accent text-black font-medium px-5 py-2.5 text-sm hover:bg-accent-hover transition-colors"
-        >
-          Ver la carta completa
-        </a>
-        <p className="text-white/50 text-sm">
-          Administración:{" "}
+
+        <div className="fade-up delay-300 flex flex-col sm:flex-row items-center gap-3 mt-2">
           <a
-            href="/admin"
-            className="text-accent hover:text-accent-hover transition-colors underline underline-offset-2"
+            href="/menu"
+            className="rounded-full bg-accent text-black font-semibold px-7 py-3 text-sm hover:bg-accent-hover transition-all hover:scale-105 shadow-lg shadow-accent/20"
           >
-            panel admin
+            Ver la carta completa
           </a>
-        </p>
+          <a
+            href="#como-funciona"
+            className="rounded-full border border-white/20 text-white/90 font-medium px-7 py-3 text-sm hover:bg-white/5 transition-colors"
+          >
+            Cómo funciona
+          </a>
+        </div>
       </div>
+
+      <a
+        href="#como-funciona"
+        aria-label="Bajar"
+        className="absolute bottom-6 left-1/2 -translate-x-1/2 scroll-hint text-white/60 hover:text-white transition-colors"
+      >
+        <svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round">
+          <path d="M12 5v14M6 13l6 6 6-6" />
+        </svg>
+      </a>
     </section>
   );
 }
