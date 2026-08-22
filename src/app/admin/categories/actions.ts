@@ -36,6 +36,19 @@ export async function updateCategory(id: string, formData: FormData) {
 
 export async function deleteCategory(id: string) {
   const supabase = await createClient();
+
+  const { count, error: countError } = await supabase
+    .from("dishes")
+    .select("id", { count: "exact", head: true })
+    .eq("category_id", id);
+
+  if (countError) return { error: countError.message };
+  if ((count ?? 0) > 0) {
+    return {
+      error: `No se puede borrar: hay ${count} plato${count === 1 ? "" : "s"} usando esta categoría. Cambiales la categoría antes.`,
+    };
+  }
+
   const { error } = await supabase
     .from("categories")
     .delete()

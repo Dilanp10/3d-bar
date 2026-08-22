@@ -64,9 +64,9 @@ export function CategoryRow({ category }: { category: Category }) {
           </button>
           <button
             onClick={async () => {
-              if (confirm("¿Eliminar esta categoría?")) {
-                await deleteCategory(category.id);
-              }
+              if (!confirm("¿Eliminar esta categoría?")) return;
+              const result = await deleteCategory(category.id);
+              if (result?.error) alert(result.error);
             }}
             className="text-xs text-red-400 hover:text-red-300 transition-colors"
           >
