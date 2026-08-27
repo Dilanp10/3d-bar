@@ -1,10 +1,13 @@
 import { createClient } from "@/lib/supabase/server";
+import { formatPrice } from "@/lib/formatting/price";
 
 export type MenuDish = {
   id: string;
   name: string;
   price: number;
+  price_display: string;
   thumbnail_url: string | null;
+  has_model: boolean;
 };
 
 export type MenuSection = {
@@ -20,7 +23,7 @@ export async function getPublicMenu(): Promise<MenuSection[]> {
     supabase.from("categories").select("id, name").order("sort_order"),
     supabase
       .from("dishes")
-      .select("id, name, price, category_id, thumbnail_url, photo_url")
+      .select("id, name, price, category_id, thumbnail_url, photo_url, model_url")
       .eq("active", true)
       .order("sort_order"),
   ]);
@@ -38,11 +41,14 @@ export async function getPublicMenu(): Promise<MenuSection[]> {
   const others: MenuDish[] = [];
 
   for (const d of dishes) {
+    const price = Number(d.price);
     const item: MenuDish = {
       id: d.id,
       name: d.name,
-      price: Number(d.price),
+      price,
+      price_display: formatPrice(price),
       thumbnail_url: d.thumbnail_url ?? d.photo_url ?? null,
+      has_model: Boolean(d.model_url),
     };
     const section = d.category_id ? byId.get(d.category_id) : undefined;
     if (section) {

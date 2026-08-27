@@ -3,7 +3,15 @@
 import { useRef } from "react";
 import { QrBlock } from "./QrBlock";
 
-export function QrButton({ id, name }: { id: string; name: string }) {
+export function QrButton({
+  id,
+  name,
+  className,
+}: {
+  id: string;
+  name: string;
+  className?: string;
+}) {
   const dialogRef = useRef<HTMLDialogElement>(null);
 
   return (
@@ -11,10 +19,19 @@ export function QrButton({ id, name }: { id: string; name: string }) {
       <button
         type="button"
         onClick={() => dialogRef.current?.showModal()}
-        className="text-xs text-foreground-muted hover:text-foreground transition-colors"
+        className={
+          className ??
+          "text-xs text-foreground-muted hover:text-foreground transition-colors"
+        }
         title="Ver QR"
       >
-        QR
+        <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round" aria-hidden>
+          <rect x="3" y="3" width="7" height="7" rx="1" />
+          <rect x="14" y="3" width="7" height="7" rx="1" />
+          <rect x="3" y="14" width="7" height="7" rx="1" />
+          <path d="M14 14h3v3M20 14v.01M14 20v.01M20 20v.01M17 17v.01" />
+        </svg>
+        Ver QR
       </button>
       <dialog
         ref={dialogRef}

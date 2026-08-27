@@ -12,6 +12,9 @@ const eslintConfig = defineConfig([
     "out/**",
     "build/**",
     "next-env.d.ts",
+    // Bundles vendored (model-viewer standalone + decoders Draco). No es código
+    // nuestro; ensuciaba el lint con cientos de warnings/errors.
+    "public/**",
   ]),
 ]);
 

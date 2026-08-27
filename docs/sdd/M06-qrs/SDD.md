@@ -89,7 +89,7 @@ Sin cambios (no hay endpoints nuevos, no hay Server Actions nuevas — todo clie
 
 - El acceso a `/admin/qrs/print` y a los botones dentro de `/admin/dishes` está protegido por el middleware/layout de M03 (redirect a `/admin/login` si no hay sesión).
 - **Nota:** las URLs `/menu/[id]` que codifica el QR son intencionalmente públicas (RLS pública ya existente). No exponen información sensible — apuntan a la landing pública del plato.
-- La env var `NEXT_PUBLIC_APP_URL` es pública por diseño (viaja al cliente); debe apuntar a `https://bar-sharif.vercel.app` en producción.
+- La env var `NEXT_PUBLIC_APP_URL` es pública por diseño (viaja al cliente); debe apuntar a `https://3d-bar.vercel.app` en producción.
 
 ## 11. Dependencias
 
@@ -103,7 +103,7 @@ Librerías:
 - `qrcode` (^1.5.4) — ya instalada, no se agrega nada nuevo.
 
 Config:
-- `NEXT_PUBLIC_APP_URL` — env var (ya usada por M02). Actualmente **no está seteada en Vercel** — hay que agregarla a producción apuntando a `https://bar-sharif.vercel.app`. En `.env.local` ya está para desarrollo.
+- `NEXT_PUBLIC_APP_URL` — env var (ya usada por M02). Actualmente **no está seteada en Vercel** — hay que agregarla a producción apuntando a `https://3d-bar.vercel.app`. En `.env.local` ya está para desarrollo.
 
 ## 12. Criterios de aceptación
 

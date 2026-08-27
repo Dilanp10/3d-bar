@@ -23,10 +23,10 @@ const WEBP_QUALITY = 0.75;
 // módulos del bundler.
 async function loadCjsModuleFromPublic<T>(path: string): Promise<T> {
   const code = await fetch(path).then((r) => r.text());
-  const module = { exports: {} as T };
+  const mod = { exports: {} as T };
   const fn = new Function("module", "exports", code);
-  fn(module, module.exports);
-  return module.exports;
+  fn(mod, mod.exports);
+  return mod.exports;
 }
 
 async function loadDracoModules() {

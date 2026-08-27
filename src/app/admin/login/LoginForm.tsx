@@ -12,7 +12,7 @@ export function LoginForm() {
   return (
     <form action={formAction} className="w-full max-w-sm flex flex-col gap-5">
       <h1 className="text-2xl font-semibold text-center text-foreground">
-        Admin — Bar Sharif
+        Admin — 3D Bar
       </h1>
 
       {state?.error && (

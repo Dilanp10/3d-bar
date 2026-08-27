@@ -37,7 +37,7 @@ Satisfies: FR-002, FR-003, FR-004, FR-005
 
 Completed:
 - Dirección, horario, teléfono e Instagram renderizados. Los 3 links externos (maps, whatsapp, instagram) llevan `target="_blank" rel="noopener noreferrer"`.
-- Verificado en dev leyendo la accessibility tree: los 3 `href` resuelven exactamente a las URLs esperadas (`google.com/maps/search`, `wa.me/5493834567890`, `instagram.com/bar.sharif`).
+- Verificado en dev leyendo la accessibility tree: los 3 `href` resuelven exactamente a las URLs esperadas (`google.com/maps/search`, `wa.me/5493834567890`, `instagram.com/3dbar`).
 
 Files:
 - src/app/BusinessInfo.tsx
@@ -52,7 +52,7 @@ Satisfies: FR-006, FR-008
 Completed:
 - Reusa `getPublicMenu()` de M10 sin duplicar queries. `flatMap` + `slice(0, 4)`.
 - Retorna `null` si no hay platos (cero markup, no rompe la home).
-- Verificado en dev: 4 platos (Provoleta, Empanadas, Hamburguesa Sharif, Fernet con cola) con foto/nombre/precio, cada link apuntando al `/menu/<id>` correcto. Link "Ver todo" a `/menu`.
+- Verificado en dev: 4 platos (Provoleta, Empanadas, Hamburguesa 3D Bar, Fernet con cola) con foto/nombre/precio, cada link apuntando al `/menu/<id>` correcto. Link "Ver todo" a `/menu`.
 
 Files:
 - src/app/FeaturedDishes.tsx

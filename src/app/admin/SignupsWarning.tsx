@@ -10,9 +10,11 @@ export async function SignupsWarning() {
         ⚠️ Los sign-ups de Supabase Auth siguen habilitados
       </p>
       <p className="mt-1 text-amber-200/90">
-        Cualquiera podría autoregistrarse con permisos de admin. Andá al dashboard
-        de Supabase → <strong>Authentication → Providers → Email</strong> y
-        desactivá <em>&quot;Allow new users to sign up&quot;</em>.
+        Cualquiera podría autoregistrarse — el allowlist de ADMIN_EMAIL le
+        bloquea el acceso al panel, pero no achica los permisos de escritura en
+        la base (RLS sigue habilitando a cualquier usuario autenticado). Andá
+        al dashboard de Supabase → <strong>Authentication → Providers → Email</strong>{" "}
+        y desactivá <em>&quot;Allow new users to sign up&quot;</em>.
       </p>
     </div>
   );

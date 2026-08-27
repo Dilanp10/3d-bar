@@ -1,4 +1,5 @@
 import Image from "next/image";
+import Link from "next/link";
 import { HERO_IMAGE_URL, BUSINESS_NAME } from "@/lib/content/business-info";
 
 export function HeroSection() {
@@ -26,34 +27,34 @@ export function HeroSection() {
         <div className="w-full max-w-7xl mx-auto grid lg:grid-cols-[1fr_1fr] gap-12 items-center">
           {/* Columna texto */}
           <div className="flex flex-col items-center lg:items-start gap-7 text-center lg:text-left max-w-xl mx-auto lg:mx-0">
-            <div className="fade-up flex items-center gap-2 rounded-full border border-accent/40 bg-black/50 backdrop-blur-sm px-4 py-1.5">
+            <div className="fade-up flex items-center gap-2 rounded-full border border-accent/40 bg-black/50 backdrop-blur-sm lg:bg-background-elevated lg:border-border px-4 py-1.5">
               <span className="w-1.5 h-1.5 rounded-full bg-accent animate-pulse" />
               <span className="text-[11px] uppercase tracking-[0.25em] text-accent">
                 {BUSINESS_NAME}
               </span>
             </div>
 
-            <h1 className="fade-up delay-100 text-5xl sm:text-6xl lg:text-7xl font-semibold leading-[1.02] text-white tracking-tight">
+            <h1 className="fade-up delay-100 text-5xl sm:text-6xl lg:text-7xl font-semibold leading-[1.02] text-white lg:text-foreground tracking-tight">
               La carta,
               <br />
               <span className="italic font-normal text-accent">en 3D.</span>
             </h1>
 
-            <p className="fade-up delay-200 text-white/75 leading-relaxed text-base sm:text-lg max-w-md">
+            <p className="fade-up delay-200 text-white/75 lg:text-foreground/70 leading-relaxed text-base sm:text-lg max-w-md">
               Escaneá el QR de cualquier plato y mirá exactamente lo que vas a
               pedir, desde todos los ángulos.
             </p>
 
             <div className="fade-up delay-300 flex flex-col sm:flex-row items-center gap-3 mt-2">
-              <a
+              <Link
                 href="/menu"
                 className="rounded-full bg-accent text-black font-semibold px-7 py-3 text-sm hover:bg-accent-hover transition-all hover:scale-105 shadow-lg shadow-accent/20"
               >
                 Ver la carta completa
-              </a>
+              </Link>
               <a
                 href="#como-funciona"
-                className="rounded-full border border-white/25 bg-white/5 backdrop-blur-sm text-white/90 font-medium px-7 py-3 text-sm hover:bg-white/10 transition-colors"
+                className="rounded-full border border-white/25 bg-white/5 backdrop-blur-sm text-white/90 lg:border-border lg:bg-transparent lg:text-foreground font-medium px-7 py-3 text-sm hover:bg-white/10 lg:hover:bg-background-elevated transition-colors"
               >
                 Cómo funciona
               </a>
@@ -65,7 +66,7 @@ export function HeroSection() {
             <div className="relative aspect-[4/5] rounded-3xl overflow-hidden border border-border-strong shadow-2xl shadow-black/60">
               <Image
                 src={HERO_IMAGE_URL}
-                alt="Ambiente de Bar Sharif"
+                alt="Ambiente de 3D Bar"
                 fill
                 priority
                 sizes="(min-width: 1024px) 50vw, 100vw"
@@ -99,7 +100,7 @@ export function HeroSection() {
       <a
         href="#como-funciona"
         aria-label="Bajar"
-        className="absolute bottom-6 left-1/2 -translate-x-1/2 scroll-hint text-white/60 hover:text-white transition-colors"
+        className="absolute bottom-6 left-1/2 -translate-x-1/2 scroll-hint text-foreground/50 hover:text-foreground transition-colors"
       >
         <svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round">
           <path d="M12 5v14M6 13l6 6 6-6" />

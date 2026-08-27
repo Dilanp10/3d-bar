@@ -115,9 +115,9 @@ Status: COMPLETED
 Satisfies: CA-001, CA-002, CA-003, CA-004, CA-005, CA-006, CA-007
 
 Completed en dev:
-- **CA-001** ✓ — con sesión rota (cookies `sb-*` borradas + fetch de prueba a `/admin/dishes` retorna redirect a login), click en botón "Ocultar" de "Hamburguesa Sharif" no cambió el flag: en la DB seguía `active = true` post-click. Sin el guard, ese toggle habría desactivado el plato públicamente.
+- **CA-001** ✓ — con sesión rota (cookies `sb-*` borradas + fetch de prueba a `/admin/dishes` retorna redirect a login), click en botón "Ocultar" de "Hamburguesa 3D Bar" no cambió el flag: en la DB seguía `active = true` post-click. Sin el guard, ese toggle habría desactivado el plato públicamente.
 - **CA-002/CA-003/CA-007** ✓ — code review sobre las 7 Server Actions modificadas: shape `{ error: string } | undefined` preservado; todo `error.message` de Supabase pasa por `sanitizeActionError`; error crudo de Storage se convierte en "Error al subir el archivo…" (verificado por matching del helper).
-- **CA-004** ✓ — banner visible en `/admin/dishes` con el texto exacto esperado ("Los sign-ups de Supabase Auth siguen habilitados"). Confirma que el probe detectó correctamente que hoy los sign-ups están ON en el proyecto Supabase de bar-sharif.
+- **CA-004** ✓ — banner visible en `/admin/dishes` con el texto exacto esperado ("Los sign-ups de Supabase Auth siguen habilitados"). Confirma que el probe detectó correctamente que hoy los sign-ups están ON en el proyecto Supabase de 3d-bar.
 - **CA-005** — pendiente de acción manual: cuando dilan desactive los sign-ups en el dashboard de Supabase, el banner debería desaparecer al recargar. No verificado in-vivo (no toqué la config de auth de tu proyecto).
 - **CA-006** ✓ — code review del helper: `Promise.race` con timeout 3s + catch general → `null`; el componente renderiza `null` cuando resultado ≠ `true`. Nunca rompe el render.
 - **Build de producción** ✓ — `npm run build` completa limpio, todas las rutas siguen apareciendo en el manifest.

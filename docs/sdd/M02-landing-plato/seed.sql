@@ -1,5 +1,5 @@
 -- ============================================================
--- M02 seed — Bar Sharif Menu 3D
+-- M02 seed — 3D Bar Menu 3D
 -- ============================================================
 -- Cómo aplicar:
 --   1. Ir al dashboard del proyecto Supabase.
@@ -79,7 +79,7 @@ select
   d.name, d.description, d.price, c.id, d.photo_url, d.model_url, d.thumbnail_url, d.sort_order
 from (values
   -- Un plato CON model_url — para validar visor 3D (reemplazar URL tras subir .glb)
-  ('Hamburguesa Sharif',
+  ('Hamburguesa Doble Carne',
    'SEED-M02-CON-3D | Doble medallón de carne, cheddar madurado, cebolla caramelizada, pan brioche artesanal.',
    9800, 'Principales',
    'https://images.unsplash.com/photo-1568901346375-23c9450c58cd?w=1200',

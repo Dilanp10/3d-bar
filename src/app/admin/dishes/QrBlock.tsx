@@ -1,6 +1,6 @@
 "use client";
 
-import { useEffect, useRef, useState } from "react";
+import { useEffect, useMemo, useRef, useState } from "react";
 import { generateQrOnCanvas } from "@/lib/qr/generate";
 import { dishMenuUrl } from "@/lib/qr/url";
 
@@ -23,17 +23,15 @@ export function QrBlock({
   size?: number;
 }) {
   const canvasRef = useRef<HTMLCanvasElement>(null);
-  const [url, setUrl] = useState<string>("");
+  const url = useMemo(() => dishMenuUrl(dishId), [dishId]);
   const [error, setError] = useState<string | null>(null);
 
   useEffect(() => {
-    const target = dishMenuUrl(dishId);
-    setUrl(target);
     if (!canvasRef.current) return;
-    generateQrOnCanvas(canvasRef.current, target, size).catch((e) => {
+    generateQrOnCanvas(canvasRef.current, url, size).catch((e) => {
       setError(e instanceof Error ? e.message : "No se pudo generar el QR");
     });
-  }, [dishId, size]);
+  }, [url, size]);
 
   const download = () => {
     const canvas = canvasRef.current;

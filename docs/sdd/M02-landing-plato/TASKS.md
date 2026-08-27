@@ -123,7 +123,7 @@ Descripción:
 Crear `src/app/menu/[id]/not-found.tsx`: página 404 con branding bar-lounge, mensaje "Este plato no existe o ya no está disponible", y (comentado, pendiente de módulo futuro) link a la carta completa.
 
 Completed:
-- Página 404 amistosa con eyebrow "BAR SHARIF", h1 y párrafo empático. Grid-center responsive. TODO comentado para link a carta futura.
+- Página 404 amistosa con eyebrow "3D BAR", h1 y párrafo empático. Grid-center responsive. TODO comentado para link a carta futura.
 
 Files:
 - src/app/menu/[id]/not-found.tsx
@@ -169,7 +169,7 @@ Status: COMPLETED
 Satisfies: FR-006, NFR-008
 
 Descripción:
-Crear `public/manifest.webmanifest` (name "Bar Sharif Menu", short_name "Sharif", icons 192/512/maskable, theme_color y background_color de la paleta, `display: standalone`, `start_url: "/"`). Crear 3 iconos placeholder en `public/icons/` (podés generar SVGs simples con la inicial "S" en ámbar sobre negro — se reemplazarán cuando haya logo real). Crear `public/sw.js` con estrategia: network-first para HTML, cache-first con nombres versionados para assets estáticos, sin cachear Supabase. Registrar el SW desde `layout.tsx` con un script inline chico (dentro de un componente cliente `<RegisterSW>`). Enlazar el manifest en `<head>` desde `layout.tsx`.
+Crear `public/manifest.webmanifest` (name "3D Bar Menu", short_name "3D Bar", icons 192/512/maskable, theme_color y background_color de la paleta, `display: standalone`, `start_url: "/"`). Crear 3 iconos placeholder en `public/icons/` (podés generar SVGs simples con la inicial "S" en ámbar sobre negro — se reemplazarán cuando haya logo real). Crear `public/sw.js` con estrategia: network-first para HTML, cache-first con nombres versionados para assets estáticos, sin cachear Supabase. Registrar el SW desde `layout.tsx` con un script inline chico (dentro de un componente cliente `<RegisterSW>`). Enlazar el manifest en `<head>` desde `layout.tsx`.
 
 Completed:
 - `manifest.webmanifest` con paleta bar-lounge + iconos SVG (192, 512, maskable-512) con la "S" ámbar sobre negro. `sw.js` con network-first para navegación, cache-first para /_next/static y /icons, sin cachear supabase.co. `<RegisterSW>` client component que solo registra en producción. Layout linkea manifest vía `metadata.manifest` de Next.
@@ -212,7 +212,7 @@ Correr `npm run dev`, abrir `/menu/<seed-id-con-modelo>` y verificar visor 3D + 
 Completed:
 - Dev server arrancado en http://localhost:3000 con Next 16.3.2 + Turbopack (5.6s ready).
 - Home `/` renderiza SSR "La carta, en 3D." — verificado con curl (grep hit).
-- `/menu/inexistente-123` (no UUID) → renderiza `not-found.tsx` con title "Plato no encontrado — Bar Sharif" y mensaje amistoso. CA-002 ✓ (contenido; status code en dev es 200 → validar 404 en `next build && next start`).
+- `/menu/inexistente-123` (no UUID) → renderiza `not-found.tsx` con title "Plato no encontrado — 3D Bar" y mensaje amistoso. CA-002 ✓ (contenido; status code en dev es 200 → validar 404 en `next build && next start`).
 - `/menu/11111111-1111-1111-1111-111111111111` (UUID válido pero placeholder Supabase) → cae a `not-found.tsx` (fetch falla → `null`). Mismo comportamiento esperado con IDs inexistentes reales.
 - Consola del browser: 0 errores.
 - SSR verificado con curl (HTML raw contiene el contenido antes de hidration).

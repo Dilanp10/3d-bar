@@ -1,6 +1,6 @@
-# Bar Sharif — Menu 3D
+# 3D Bar — Menu 3D
 
-App para el Bar Sharif donde cada plato de la carta tiene un QR que, al escanearse, abre una URL con el plato en 3D interactivo. Un admin único (dueño del bar) carga los platos con sus modelos `.glb` generados en el celular con **RealityScan** (Epic Games, gratis).
+App para el 3D Bar donde cada plato de la carta tiene un QR que, al escanearse, abre una URL con el plato en 3D interactivo. Un admin único (dueño del bar) carga los platos con sus modelos `.glb` generados en el celular con **RealityScan** (Epic Games, gratis).
 
 ## Stack
 

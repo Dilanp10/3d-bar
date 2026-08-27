@@ -203,29 +203,57 @@ export function DishForm({ dish, categories, action }: Props) {
         </select>
       </label>
 
-      <label className="flex flex-col gap-1.5">
-        <span className="text-sm text-foreground-muted">
-          Foto {dish?.photo_url ? "(reemplazar)" : ""}
-        </span>
-        <input
-          name="photo"
-          type="file"
-          accept="image/jpeg,image/png,image/webp"
-          className="text-sm text-foreground-muted file:mr-3 file:rounded-lg file:border-0 file:bg-background-elevated file:px-4 file:py-2 file:text-foreground file:cursor-pointer"
-        />
-      </label>
+      <div className="border-t border-border pt-5 flex flex-col gap-1">
+        <h2 className="text-sm font-semibold text-foreground">Foto del plato</h2>
+        <p className="text-xs text-foreground-dim mb-1">
+          Una foto real. Es lo que se muestra si el plato no tiene modelo 3D.
+        </p>
+        <label className="flex flex-col gap-1.5">
+          <span className="text-sm text-foreground-muted">
+            {dish?.photo_url ? "Cambiar foto" : "Elegir foto"}
+          </span>
+          <input
+            name="photo"
+            type="file"
+            accept="image/jpeg,image/png,image/webp"
+            className="text-sm text-foreground-muted file:mr-3 file:rounded-lg file:border-0 file:bg-background-elevated file:px-4 file:py-2 file:text-foreground file:cursor-pointer"
+          />
+          {dish?.photo_url && (
+            <label className="flex items-center gap-2 cursor-pointer text-xs text-foreground-dim mt-1">
+              <input name="remove_photo" type="checkbox" className="w-3.5 h-3.5 rounded accent-accent" />
+              Quitar la foto actual (si no subís una nueva)
+            </label>
+          )}
+        </label>
+      </div>
 
-      <label className="flex flex-col gap-1.5">
-        <span className="text-sm text-foreground-muted">
-          Modelo 3D (.glb) {dish?.model_url ? "(reemplazar)" : ""}
-        </span>
-        <input
-          name="model"
-          type="file"
-          accept=".glb"
-          className="text-sm text-foreground-muted file:mr-3 file:rounded-lg file:border-0 file:bg-background-elevated file:px-4 file:py-2 file:text-foreground file:cursor-pointer"
-        />
-      </label>
+      <div className="border-t border-border pt-5 flex flex-col gap-1">
+        <h2 className="text-sm font-semibold text-foreground">
+          Modelo 3D <span className="text-foreground-dim font-normal">(opcional)</span>
+        </h2>
+        <p className="text-xs text-foreground-dim mb-1">
+          Subí el archivo <strong>.glb</strong> que generaste con RealityScan. Se
+          optimiza solo (puede tardar unos segundos). Es lo que el cliente ve y
+          puede poner sobre la mesa con la cámara.
+        </p>
+        <label className="flex flex-col gap-1.5">
+          <span className="text-sm text-foreground-muted">
+            {dish?.model_url ? "Cambiar modelo 3D" : "Elegir archivo .glb"}
+          </span>
+          <input
+            name="model"
+            type="file"
+            accept=".glb"
+            className="text-sm text-foreground-muted file:mr-3 file:rounded-lg file:border-0 file:bg-background-elevated file:px-4 file:py-2 file:text-foreground file:cursor-pointer"
+          />
+          {dish?.model_url && (
+            <label className="flex items-center gap-2 cursor-pointer text-xs text-foreground-dim mt-1">
+              <input name="remove_model" type="checkbox" className="w-3.5 h-3.5 rounded accent-accent" />
+              Quitar el modelo 3D actual (si no subís uno nuevo)
+            </label>
+          )}
+        </label>
+      </div>
 
       <label className="flex items-center gap-3 cursor-pointer">
         <input

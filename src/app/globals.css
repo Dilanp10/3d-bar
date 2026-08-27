@@ -1,7 +1,7 @@
 @import "tailwindcss";
 
 :root {
-  /* Paleta bar-lounge — oscura por defecto */
+  /* Paleta bar-lounge — oscura por defecto (base) */
   --background: #0a0a0a;
   --background-elevated: #141414;
   --background-panel: #1a1a1a;
@@ -13,6 +13,56 @@
   --accent-dim: #a67a2b;
   --border: rgba(245, 182, 66, 0.15);
   --border-strong: rgba(245, 182, 66, 0.35);
+  color-scheme: dark;
+}
+
+/* Tema claro — crema cálido y suave (nada de blanco puro). Tokens reutilizados
+   por toda la app (M14). */
+:root[data-theme="light"] {
+  --background: #efeae0;
+  --background-elevated: #f6f2e9;
+  --background-panel: #e6e0d4;
+  --foreground: #26241e;
+  --foreground-muted: #63605a;
+  --foreground-dim: #918d84;
+  --accent: #b57d18;
+  --accent-hover: #9c6a12;
+  --accent-dim: #8a5f14;
+  --border: rgba(181, 125, 24, 0.20);
+  --border-strong: rgba(181, 125, 24, 0.42);
+  color-scheme: light;
+}
+
+/* Sin elección explícita: seguir la preferencia del sistema */
+@media (prefers-color-scheme: light) {
+  :root:not([data-theme="dark"]) {
+    --background: #efeae0;
+    --background-elevated: #f6f2e9;
+    --background-panel: #e6e0d4;
+    --foreground: #26241e;
+    --foreground-muted: #63605a;
+    --foreground-dim: #918d84;
+    --accent: #b57d18;
+    --accent-hover: #9c6a12;
+    --accent-dim: #8a5f14;
+    --border: rgba(181, 125, 24, 0.20);
+    --border-strong: rgba(181, 125, 24, 0.42);
+    color-scheme: light;
+  }
+}
+
+/* Transición suave solo al alternar el tema (la clase la agrega el toggle
+   durante ~400ms, así no afecta hovers ni performance normal). Excluye
+   imágenes/svg/model-viewer: no usan estos tokens de color y son los nodos
+   más caros de recalcular (el canvas WebGL del visor 3D, sobre todo). */
+@media (prefers-reduced-motion: no-preference) {
+  html.theme-anim,
+  html.theme-anim :where(*):not(img, image, svg, svg *, model-viewer, model-viewer *) {
+    transition:
+      background-color 0.35s ease,
+      border-color 0.35s ease,
+      color 0.35s ease !important;
+  }
 }
 
 @theme inline {
@@ -95,6 +145,53 @@ body {
   animation: scrollHint 2s ease-in-out infinite;
 }
 
+.ar-cta {
+  position: absolute;
+  left: 50%;
+  bottom: 1rem;
+  transform: translateX(-50%);
+  display: inline-flex;
+  align-items: center;
+  gap: 8px;
+  background: var(--accent);
+  color: #000;
+  font-weight: 600;
+  font-size: 14px;
+  padding: 12px 20px;
+  border-radius: 999px;
+  border: none;
+  cursor: pointer;
+  box-shadow: 0 10px 25px -5px rgba(245, 182, 66, 0.35);
+  transition: transform 0.2s ease, background 0.2s ease;
+  z-index: 5;
+}
+.ar-cta:hover {
+  background: var(--accent-hover);
+  transform: translateX(-50%) scale(1.05);
+}
+.ar-cta:active {
+  transform: translateX(-50%) scale(0.95);
+}
+
+@keyframes dragHintSwipe {
+  0%, 100% { transform: translateX(-6px) rotate(-10deg); }
+  50%      { transform: translateX(6px) rotate(10deg); }
+}
+.drag-hint-swipe {
+  animation: dragHintSwipe 1.6s ease-in-out infinite;
+}
+
+@keyframes dragHintAppear {
+  from { opacity: 0; transform: translate(-50%, 8px); }
+  to   { opacity: 1; transform: translate(-50%, 0); }
+}
+.drag-hint-appear {
+  animation: dragHintAppear 0.4s ease-out both;
+}
+
 @media (prefers-reduced-motion: reduce) {
-  .fade-up, .fade-in, .scroll-hint { animation: none !important; opacity: 1; }
+  .fade-up, .fade-in, .scroll-hint, .drag-hint-swipe, .drag-hint-appear {
+    animation: none !important;
+    opacity: 1;
+  }
 }

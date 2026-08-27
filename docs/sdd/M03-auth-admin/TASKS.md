@@ -91,7 +91,7 @@ Status: COMPLETED
 Satisfies: FR-002, FR-003, NFR-007
 
 Descripción:
-`src/app/admin/layout.tsx` (Server Component): llama `getUser()` como defensa en profundidad (si el middleware fallara). Sin user devuelve `<>{children}</>` (así el login se renderiza sin nav). Con user renderiza nav (Sharif Admin / Platos / Categorías / Salir) + main.
+`src/app/admin/layout.tsx` (Server Component): llama `getUser()` como defensa en profundidad (si el middleware fallara). Sin user devuelve `<>{children}</>` (así el login se renderiza sin nav). Con user renderiza nav (3D Bar Admin / Platos / Categorías / Salir) + main.
 
 Completed:
 - Guard doble (middleware + layout). Nav con paleta bar-lounge; LogoutButton en la esquina.
@@ -139,10 +139,10 @@ Status: COMPLETED
 Satisfies: CA-001, CA-002, CA-004, CA-005
 
 Descripción:
-Deploy en Vercel con `NEXT_PUBLIC_SUPABASE_URL` y `NEXT_PUBLIC_SUPABASE_ANON_KEY` configuradas. Verificar en https://bar-sharif.vercel.app: `/admin` sin sesión → redirect a login, login OK → panel platos, `/admin/login` con sesión → redirect a `/admin`, botón Salir → login y sesión vacía.
+Deploy en Vercel con `NEXT_PUBLIC_SUPABASE_URL` y `NEXT_PUBLIC_SUPABASE_ANON_KEY` configuradas. Verificar en https://3d-bar.vercel.app: `/admin` sin sesión → redirect a login, login OK → panel platos, `/admin/login` con sesión → redirect a `/admin`, botón Salir → login y sesión vacía.
 
 Completed:
-- URL producción: https://bar-sharif.vercel.app
+- URL producción: https://3d-bar.vercel.app
 - CA-001 verificado: `/admin` sin cookie redirige a `/admin/login`.
 - CA-002 verificado: login con `dilanperea10@gmail.com` / `Sharif2024!` → redirige a `/admin` con cookie `sb-*` HttpOnly.
 - CA-004 verificado: click Salir → sesión limpia → reload queda en login.

@@ -3,6 +3,7 @@
 import { z } from "zod";
 import { redirect } from "next/navigation";
 import { createClient } from "@/lib/supabase/server";
+import { isAdminEmail } from "@/lib/auth/admin-email";
 
 const GENERIC_ERROR = "Email o contraseña incorrectos";
 
@@ -30,9 +31,16 @@ export async function signIn(
   }
 
   const supabase = await createClient();
-  const { error } = await supabase.auth.signInWithPassword(parsed.data);
+  const { data, error } = await supabase.auth.signInWithPassword(parsed.data);
 
   if (error) {
+    return { error: GENERIC_ERROR };
+  }
+
+  // Allowlist de un solo admin: si el email no es el admin permitido, no se lo
+  // deja entrar (se cierra la sesión recién abierta). Mismo mensaje genérico.
+  if (!isAdminEmail(data.user?.email)) {
+    await supabase.auth.signOut();
     return { error: GENERIC_ERROR };
   }
 

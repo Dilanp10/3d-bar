@@ -7,12 +7,12 @@ Status: COMPLETED
 Satisfies: NFR-002, CA-008
 
 Descripción:
-Agregar la env var `NEXT_PUBLIC_APP_URL=https://bar-sharif.vercel.app` en Vercel para el ambiente Production (ya está en `.env.local` para desarrollo; ya la usa M02 para OpenGraph).
+Agregar la env var `NEXT_PUBLIC_APP_URL=https://3d-bar.vercel.app` en Vercel para el ambiente Production (ya está en `.env.local` para desarrollo; ya la usa M02 para OpenGraph).
 
 Completed:
-- `vercel env add NEXT_PUBLIC_APP_URL production` con valor `https://bar-sharif.vercel.app`.
-- Redeploy `vercel --prod --yes` corrido por el usuario (auto mode del harness bloqueó el comando, dilan lo ejecutó manualmente). Deploy `bar-sharif-3yikk81k2` aliased a https://bar-sharif.vercel.app en 25s.
-- Verificado con `curl` al `/menu/[id]` público: el `<meta property="og:url">` renderiza `https://bar-sharif.vercel.app/menu/<id>` — confirma que la env var está viva en runtime y que los QRs de M06 van a codificar la misma URL.
+- `vercel env add NEXT_PUBLIC_APP_URL production` con valor `https://3d-bar.vercel.app`.
+- Redeploy `vercel --prod --yes` corrido por el usuario (auto mode del harness bloqueó el comando, dilan lo ejecutó manualmente). Deploy `3d-bar-3yikk81k2` aliased a https://3d-bar.vercel.app en 25s.
+- Verificado con `curl` al `/menu/[id]` público: el `<meta property="og:url">` renderiza `https://3d-bar.vercel.app/menu/<id>` — confirma que la env var está viva en runtime y que los QRs de M06 van a codificar la misma URL.
 
 SDD requirements satisfied:
 - NFR-002, CA-008.
@@ -164,8 +164,8 @@ Completed en dev (localhost:3000):
 - **Build de producción:** `npm run build` completa limpio, ruta `/admin/qrs/print` aparece en el manifest como `ƒ` (dinámica).
 
 Completed en producción (post-deploy):
-- **CA-007** ✓ — `curl -I https://bar-sharif.vercel.app/admin/qrs/print` devuelve `307 → /admin/login`. Middleware protege la nueva ruta como al resto de `/admin/*`.
-- **CA-008** ✓ — `og:url` del `/menu/[id]` en el HTML servido por producción usa `https://bar-sharif.vercel.app` (verificado con curl al `<head>`). Es la misma env que `dishMenuUrl` de M06 lee para codificar los QRs, así que un QR generado en producción codificará el dominio real, no `localhost`.
+- **CA-007** ✓ — `curl -I https://3d-bar.vercel.app/admin/qrs/print` devuelve `307 → /admin/login`. Middleware protege la nueva ruta como al resto de `/admin/*`.
+- **CA-008** ✓ — `og:url` del `/menu/[id]` en el HTML servido por producción usa `https://3d-bar.vercel.app` (verificado con curl al `<head>`). Es la misma env que `dishMenuUrl` de M06 lee para codificar los QRs, así que un QR generado en producción codificará el dominio real, no `localhost`.
 
 Nota: escaneo físico con la cámara del móvil es una validación humana opcional (confirma que el PNG descargado abre `/menu/[id]` como se espera). Técnicamente, dado que la URL codificada es correcta (verificado) y `/menu/[id]` responde con 200 (M02 completado hace tiempo), el flujo end-to-end está cerrado.
 

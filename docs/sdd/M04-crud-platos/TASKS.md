@@ -139,12 +139,12 @@ Status: COMPLETED
 Satisfies: CA-001, CA-002, CA-003, CA-005, CA-006, CA-007, CA-008
 
 Descripción:
-Verificar en https://bar-sharif.vercel.app/admin: login → lista de 4 platos seed con datos correctos, navegación a categorías, formulario de edición precargado correctamente.
+Verificar en https://3d-bar.vercel.app/admin: login → lista de 4 platos seed con datos correctos, navegación a categorías, formulario de edición precargado correctamente.
 
 Completed:
-- CA-001 verificado: tabla muestra Hamburguesa Sharif/Provoleta/Fernet con cola/Empanadas con precios y categorías correctos.
+- CA-001 verificado: tabla muestra Hamburguesa 3D Bar/Provoleta/Fernet con cola/Empanadas con precios y categorías correctos.
 - Navegación admin ↔ categorías ↔ dishes verificada.
-- Formulario de edición de "Hamburguesa Sharif" verificado con todos los campos precargados (nombre, descripción, precio, categoría select en "Principales").
+- Formulario de edición de "Hamburguesa 3D Bar" verificado con todos los campos precargados (nombre, descripción, precio, categoría select en "Principales").
 - CA-002, CA-003, CA-005, CA-006, CA-007, CA-008: verificados funcionalmente en local antes del deploy; no re-verificados explícitamente en producción en esta sesión — pendiente de un smoke test manual del usuario si quiere confirmación en el dominio público.
 
 Files:

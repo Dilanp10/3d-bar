@@ -5,7 +5,14 @@ import { formatPrice } from "@/lib/formatting/price";
 
 export async function FeaturedDishes() {
   const sections = await getPublicMenu();
-  const dishes = sections.flatMap((s) => s.dishes).slice(0, 4);
+  // Destacados: el postre estrella (categoría "Postres") va primero; el resto
+  // mantiene el orden de la carta. /menu usa getPublicMenu por su cuenta, así
+  // que su orden (Entradas → Principales → Tragos → Postres) no se ve afectado.
+  const featuredWeight = (name: string) => (name === "Postres" ? 0 : 1);
+  const dishes = [...sections]
+    .sort((a, b) => featuredWeight(a.name) - featuredWeight(b.name))
+    .flatMap((s) => s.dishes)
+    .slice(0, 4);
 
   if (dishes.length === 0) return null;
 

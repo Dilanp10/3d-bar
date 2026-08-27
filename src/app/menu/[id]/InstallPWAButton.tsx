@@ -15,6 +15,8 @@ export function InstallPWAButton() {
 
   useEffect(() => {
     const media = window.matchMedia("(display-mode: standalone)");
+    // Detección client-only del modo standalone: setState en efecto intencional.
+    // eslint-disable-next-line react-hooks/set-state-in-effect
     setStandalone(media.matches);
 
     function onBeforeInstall(e: Event) {

@@ -1,4 +1,4 @@
-// Service worker mínimo para Bar Sharif Menu.
+// Service worker mínimo para 3D Bar Menu.
 // Estrategia:
 //   - HTML / navegación: network-first, fallback a cache si estás offline.
 //   - Assets estáticos (/_next/static, /icons, etc.): cache-first.
@@ -7,8 +7,8 @@
 // Se re-registra automáticamente cuando cambia el hash del archivo.
 
 const VERSION = "v1";
-const STATIC_CACHE = `sharif-static-${VERSION}`;
-const SHELL_CACHE = `sharif-shell-${VERSION}`;
+const STATIC_CACHE = `3dbar-static-${VERSION}`;
+const SHELL_CACHE = `3dbar-shell-${VERSION}`;
 
 const SHELL_URLS = ["/", "/manifest.webmanifest"];
 

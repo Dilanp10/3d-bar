@@ -13,19 +13,25 @@ export function DishInfo({ dish }: { dish: Dish }) {
         <h1 className="text-3xl sm:text-4xl font-semibold leading-tight text-foreground">
           {dish.name}
         </h1>
+      </header>
+
+      {dish.description ? (
+        <p className="mt-5 text-base leading-relaxed text-foreground-muted">
+          {dish.description}
+        </p>
+      ) : null}
+
+      <div className="mt-8 pt-6 border-t border-border flex items-baseline justify-between gap-4">
+        <span className="text-[10px] uppercase tracking-[0.3em] text-foreground-dim">
+          Precio
+        </span>
         <p
-          className="text-2xl font-medium text-accent"
+          className="text-3xl sm:text-4xl font-semibold text-accent tabular-nums"
           aria-label={`Precio: ${formatPrice(dish.price)}`}
         >
           {formatPrice(dish.price)}
         </p>
-      </header>
-
-      {dish.description ? (
-        <p className="mt-6 text-base leading-relaxed text-foreground-muted">
-          {dish.description}
-        </p>
-      ) : null}
+      </div>
     </section>
   );
 }

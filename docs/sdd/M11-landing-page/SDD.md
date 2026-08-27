@@ -51,13 +51,13 @@ No incluye:
 - `src/lib/content/business-info.ts` — exporta:
   ```ts
   // ⚠️ PLACEHOLDER — datos ficticios. Reemplazar antes de lanzar públicamente.
-  export const BUSINESS_NAME = "Bar Sharif";
+  export const BUSINESS_NAME = "3D Bar";
   export const ADDRESS = "San Martín 456, San Fernando del Valle de Catamarca";
   export const HOURS = "Martes a Domingo · 19:00 a 02:00";
   export const PHONE_DISPLAY = "+54 9 383 456-7890";
   export const WHATSAPP_URL = "https://wa.me/5493834567890";
-  export const INSTAGRAM_HANDLE = "@bar.sharif";
-  export const INSTAGRAM_URL = "https://instagram.com/bar.sharif";
+  export const INSTAGRAM_HANDLE = "@3dbar";
+  export const INSTAGRAM_URL = "https://instagram.com/3dbar";
   export const MAPS_URL = `https://www.google.com/maps/search/?api=1&query=${encodeURIComponent(ADDRESS)}`;
   export const HERO_IMAGE_URL = "https://images.unsplash.com/photo-1514933651103-005eec06c04b?w=1600"; // placeholder, reemplazar por foto real del local
   ```

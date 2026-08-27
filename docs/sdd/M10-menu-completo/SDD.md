@@ -20,7 +20,7 @@ Incluye:
 - `revalidatePath("/menu")` agregado a las Server Actions que mutan `dishes`/`categories` (createDish, updateDish, deleteDish, toggleDishActive, createCategory, updateCategory, deleteCategory) para que el listado se mantenga fresco.
 
 No incluye:
-- Buscador o filtros por categoría/precio dentro de `/menu` (fuera de MVP; se puede agregar después sin cambiar el modelo de datos).
+- ~~Buscador o filtros por categoría/precio dentro de `/menu`~~ **agregado post-MVP** (ver `src/app/menu/MenuFilters.tsx`): búsqueda por nombre + filtro por categoría + filtro "Con 3D", client-side sobre los datos ya traídos por `getPublicMenu()`. No cambió el modelo de datos (tal como se había previsto acá), sólo extendió `MenuDish` con `has_model`/`price_display`. Ver FR-008 y CA-008.
 - Visor 3D en la vista de lista (sólo en `/menu/[id]`, como ya funciona).
 - Tracking de analytics para esta página (M09 trackea vistas de plato individual, no de la lista — se puede evaluar como extensión futura, no ahora).
 - Cambiar el flujo de QR existente — `/menu/[id]` sigue siendo la ruta que codifican los QRs (M06), esto es un camino adicional, no un reemplazo.
@@ -34,6 +34,7 @@ No incluye:
 - FR-005 — Si no hay ningún plato activo en todo el sistema, `/menu` muestra el mensaje "La carta está siendo armada. Volvé más tarde." en vez de una lista vacía.
 - FR-006 — La home (`/`) debe tener un link visible "Ver la carta completa" que navegue a `/menu`.
 - FR-007 — Al activar/desactivar un plato, o crear/editar/borrar un plato o categoría desde el admin, `/menu` debe reflejar el cambio (via `revalidatePath`).
+- FR-008 — `/menu` debe permitir buscar por nombre, filtrar por categoría y filtrar "sólo con modelo 3D", combinables entre sí, sin recargar la página (`src/app/menu/MenuFilters.tsx`, client-side sobre la lista ya cargada).
 
 ## 5. Requisitos no funcionales
 
@@ -92,3 +93,4 @@ Librerías: ninguna nueva.
 - CA-005 — Desactivar un plato desde `/admin/dishes` y recargar `/menu` — el plato ya no aparece.
 - CA-006 — La home (`/`) tiene un link visible que navega correctamente a `/menu`.
 - CA-007 — El HTML de `/menu` incluye `<title>` y metadata `og:*` coherente con el resto del sitio.
+- CA-008 — Escribir en el buscador, tocar una categoría, o activar "Con 3D" filtra la lista en el cliente sin recargar; combinar los tres filtros da la intersección correcta.

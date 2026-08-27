@@ -4,6 +4,11 @@ import { revalidatePath } from "next/cache";
 import { createClient } from "@/lib/supabase/server";
 import { requireAdmin } from "@/lib/auth/require-admin";
 import { sanitizeActionError } from "@/lib/errors/sanitize";
+import {
+  categorySchema,
+  categoryInputFromForm,
+  firstZodMessage,
+} from "@/lib/validation/dish";
 
 export async function createCategory(formData: FormData) {
   const supabase = await createClient();
@@ -14,12 +19,12 @@ export async function createCategory(formData: FormData) {
     return { error: sanitizeActionError(e) };
   }
 
-  const name = formData.get("name") as string;
-  const sortOrder = Number(formData.get("sort_order") || "0");
+  const parsed = categorySchema.safeParse(categoryInputFromForm(formData));
+  if (!parsed.success) return { error: firstZodMessage(parsed.error) };
 
   const { error } = await supabase
     .from("categories")
-    .insert({ name, sort_order: sortOrder });
+    .insert({ name: parsed.data.name, sort_order: parsed.data.sort_order });
 
   if (error) return { error: sanitizeActionError(error) };
 
@@ -37,12 +42,12 @@ export async function updateCategory(id: string, formData: FormData) {
     return { error: sanitizeActionError(e) };
   }
 
-  const name = formData.get("name") as string;
-  const sortOrder = Number(formData.get("sort_order") || "0");
+  const parsed = categorySchema.safeParse(categoryInputFromForm(formData));
+  if (!parsed.success) return { error: firstZodMessage(parsed.error) };
 
   const { error } = await supabase
     .from("categories")
-    .update({ name, sort_order: sortOrder })
+    .update({ name: parsed.data.name, sort_order: parsed.data.sort_order })
     .eq("id", id);
 
   if (error) return { error: sanitizeActionError(error) };

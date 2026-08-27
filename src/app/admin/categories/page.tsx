@@ -11,9 +11,11 @@ export default async function CategoriesPage() {
 
   return (
     <div>
-      <h1 className="text-2xl font-semibold text-foreground mb-6">
-        Categorías
-      </h1>
+      <h1 className="text-2xl font-semibold text-foreground">Categorías</h1>
+      <p className="text-sm text-foreground-muted mt-0.5 mb-6">
+        Sirven para agrupar los platos en la carta (ej: Entradas, Principales,
+        Bebidas). El <strong>orden</strong> decide cómo aparecen.
+      </p>
 
       <div className="rounded-xl border border-border overflow-hidden mb-6">
         <table className="w-full text-sm">
@@ -36,7 +38,7 @@ export default async function CategoriesPage() {
                   colSpan={3}
                   className="px-4 py-8 text-center text-foreground-dim"
                 >
-                  No hay categorías todavía.
+                  Todavía no creaste categorías. Agregá la primera abajo. 👇
                 </td>
               </tr>
             )}

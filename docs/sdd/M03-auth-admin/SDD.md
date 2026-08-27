@@ -8,7 +8,7 @@ Approved: 2026-08-21 (reconciliado retroactivamente — código reescrito para c
 
 ## 2. Objetivo
 
-Proteger las rutas `/admin/*` con autenticación email/password usando Supabase Auth. Un único admin (dueño del Bar Sharif) puede iniciar y cerrar sesión, y solo con sesión válida puede acceder al panel de gestión de platos (que se implementa en M04). El módulo también define la mitad "escritura" de RLS sobre `dishes` y `categories`, complementando la mitad "lectura pública" que ya sentó M02.
+Proteger las rutas `/admin/*` con autenticación email/password usando Supabase Auth. Un único admin (dueño del 3D Bar) puede iniciar y cerrar sesión, y solo con sesión válida puede acceder al panel de gestión de platos (que se implementa en M04). El módulo también define la mitad "escritura" de RLS sobre `dishes` y `categories`, complementando la mitad "lectura pública" que ya sentó M02.
 
 ## 3. Alcance
 
@@ -38,7 +38,7 @@ Proteger las rutas `/admin/*` con autenticación email/password usando Supabase 
 
 - **FR-001** — `/admin/login` renderiza un formulario email+password con validación básica y botón "Iniciar sesión".
 - **FR-002** — Al acceder a `/admin` o cualquier ruta `/admin/*` sin sesión válida, se redirige a `/admin/login`.
-- **FR-003** — Existe un botón "Cerrar sesión" en el layout de admin que invoca `signOut()` y redirige a `/admin/login`.
+- **FR-003** — Existe un botón "Salir" en el layout de admin que invoca `signOut()` y redirige a la landing pública `/` (cambiado en M13; antes iba a `/admin/login`).
 - **FR-004** — La sesión persiste en cookies HTTP-only refrescadas por middleware en cada request; sobrevive al cierre de pestaña dentro del período de expiración configurado por Supabase (default 1 h con refresh silencioso).
 - **FR-005** — Si las credenciales son inválidas, la página de login muestra un único mensaje genérico "email o contraseña incorrectos". El backend no debe distinguir "usuario no existe" vs "password incorrecto" ni por mensaje ni por timing.
 - **FR-006** — Las tablas `dishes` y `categories` tienen policies RLS que permiten `insert/update/delete` solo al rol `authenticated`. Las policies de `select` públicas de M02 quedan intactas.
@@ -87,7 +87,7 @@ src/
 | `admin/login/page.tsx` | Server Component | Chequea si ya hay sesión → redirect `/admin`. Si no, renderiza `<LoginForm>`. |
 | `admin/login/LoginForm.tsx` | Client Component | Estado del form + `useActionState` con la Server Action `signIn`. Muestra error genérico. |
 | `admin/login/actions.ts` | Server Action | `signIn(prevState, formData)`: valida con zod (email + password ≥ 8), llama `supabase.auth.signInWithPassword`, si falla devuelve `{ error: "..." }` (mensaje genérico), si OK `redirect("/admin")`. |
-| `admin/logout/actions.ts` | Server Action | `signOut()`: `supabase.auth.signOut()` + `redirect("/admin/login")`. |
+| `admin/logout/actions.ts` | Server Action | `signOut()`: `supabase.auth.signOut()` + `redirect("/")` (landing; cambiado en M13). |
 | `admin/LogoutButton.tsx` | Client Component | Botón que invoca la Server Action `signOut`. |
 
 ## 7. Flujo de datos
@@ -121,10 +121,10 @@ Usuario → /admin/login → completa email+pass → submit
 
 ### Logout
 ```
-Usuario click "Cerrar sesión"
+Usuario click "Salir"
    → Server Action signOut()
        → supabase.auth.signOut()
-       → redirect("/admin/login")
+       → redirect("/")   (landing pública; cambiado en M13)
 ```
 
 ## 8. Modelo de datos
@@ -170,6 +170,7 @@ Ambas usan cookies HTTP-only manejadas por `@supabase/ssr`.
 - **Cookies HTTP-only + SameSite Lax + Secure** en producción — protege contra XSS y CSRF cross-site.
 - **CSRF nativo** de Server Actions de Next (token en la respuesta del RSC, verificado en cada action).
 - **Sign-up deshabilitado** en el dashboard → nadie puede autoregistrarse.
+- **Allowlist de un solo admin (agregado 2026-08-24, defense-in-depth):** env `ADMIN_EMAIL`. Si está seteada, SOLO ese email es admin — verificado en `middleware`, `requireAdmin` y el login (que desloguea a un email autenticado pero no permitido, con el mismo error genérico). Helper puro en `src/lib/auth/admin-email.ts` (usable desde el edge middleware). Si la env no está seteada, cae al comportamiento previo (cualquier autenticado) para no arriesgar lockout en el rollout. Admin actual: `admin@test.com`.
 - **Mensaje de error genérico** en login (FR-005) → no revela existencia del usuario.
 - **RLS estricto** → aunque un atacante consiguiera el anon key, no puede escribir.
 - **Middleware refresh** → tokens rotan silenciosamente; una sesión robada tiene ventana corta.
@@ -199,7 +200,7 @@ Ambas usan cookies HTTP-only manejadas por `@supabase/ssr`.
 - **CA-001** — Visitar `/admin` sin cookie de sesión redirige a `/admin/login` (HTTP 307/308).
 - **CA-002** — Login con credenciales correctas redirige a `/admin` y setea cookie HTTP-only (`sb-...`) verificable en devtools → Network.
 - **CA-003** — Login con credenciales inválidas muestra "Email o contraseña incorrectos" sin distinguir campo. Ningún leak informativo.
-- **CA-004** — Botón "Cerrar sesión" desde `/admin` cierra la sesión (cookie borrada) y redirige a `/admin/login`; reload posterior queda en login.
+- **CA-004** — Botón "Salir" desde `/admin` cierra la sesión (cookie borrada) y redirige a la landing `/` (cambiado en M13); volver a `/admin` después queda en login.
 - **CA-005** — Usuario autenticado que visita `/admin/login` es redirigido a `/admin`.
 - **CA-006** — Cookies emitidas por el login incluyen los flags `HttpOnly`, `SameSite=Lax`, y `Secure` cuando `NODE_ENV=production`.
 - **CA-007** — Un `curl` con solo el anon key intentando `POST /rest/v1/dishes` devuelve error 401/403 por RLS (`dishes_admin_write` no permite anon).
