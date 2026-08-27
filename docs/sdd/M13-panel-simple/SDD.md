@@ -43,7 +43,9 @@ No incluye (queda fuera):
 - FR-005 — El borrado pide confirmación con el **nombre del plato** y aviso de
   irreversible (reemplaza el `confirm("¿Eliminar este plato?")` genérico).
 - FR-006 — La barra de navegación usa etiquetas claras con íconos: Platos,
-  Categorías, Analytics, Salir.
+  Categorías, Visitas (etiqueta elegida en implementación en vez de "Analytics",
+  más clara para un no-técnico). El cierre de sesión es un botón aparte
+  (`LogoutButton`) alineado a la derecha de la misma barra, no un ítem del nav.
 
 ## 5. Requisitos no funcionales
 - NFR-001 — Sin regresiones funcionales: crear/editar/borrar/ocultar/QR siguen
