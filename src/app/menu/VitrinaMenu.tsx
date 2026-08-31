@@ -3,6 +3,7 @@
 import { useState, useRef, useEffect, useMemo, useCallback } from "react";
 import Link from "next/link";
 import Image from "next/image";
+import { useRouter } from "next/navigation";
 import type { MenuSection, MenuDish } from "@/lib/db/menu";
 
 type FlatDish = MenuDish & { category: string };
@@ -34,6 +35,7 @@ export function VitrinaMenu({ sections }: Props) {
     [dishes, activeCategory],
   );
 
+  const router = useRouter();
   const [activeIndex, setActiveIndex] = useState(0);
   // dragOffset: pixels of drag; converted to fractional-card offset by cardWidth
   const [dragOffset, setDragOffset] = useState(0);
@@ -203,17 +205,16 @@ export function VitrinaMenu({ sections }: Props) {
               <button
                 key={dish.id}
                 type="button"
-                onClick={(e) => {
+                onClick={() => {
                   if (Math.abs(dragOffset) > 5) return; // consumido por drag
                   if (isCenter) {
-                    // navegar al plato
-                    const link = e.currentTarget.querySelector(
-                      "a",
-                    ) as HTMLAnchorElement | null;
-                    link?.click();
+                    router.push(`/menu/${dish.id}`);
                   } else {
                     goTo(i);
                   }
+                }}
+                onMouseEnter={() => {
+                  if (isCenter) router.prefetch(`/menu/${dish.id}`);
                 }}
                 className="absolute focus:outline-none"
                 style={{
@@ -226,6 +227,7 @@ export function VitrinaMenu({ sections }: Props) {
                   zIndex: 100 - Math.round(abs * 10),
                   width: `${cardWidth}px`,
                   height: `${cardWidth * 1.28}px`,
+                  cursor: "pointer",
                 }}
                 aria-label={`${dish.name}, ${dish.price_display}`}
                 aria-selected={isCenter}
@@ -367,6 +369,26 @@ function VitrinaCard({
         <span className="absolute top-3 right-3 text-[10px] uppercase tracking-[0.22em] font-semibold text-black bg-accent px-2 py-1 rounded-full">
           3D
         </span>
+      )}
+
+      {/* Hint tocable en la card central */}
+      {isCenter && (
+        <div className="absolute bottom-3 right-3 flex items-center gap-1 rounded-full bg-black/55 backdrop-blur-sm border border-white/15 px-2.5 py-1 text-[10px] uppercase tracking-[0.22em] font-medium text-white/90">
+          Tocá
+          <svg
+            width="10"
+            height="10"
+            viewBox="0 0 24 24"
+            fill="none"
+            stroke="currentColor"
+            strokeWidth="2.5"
+            strokeLinecap="round"
+            strokeLinejoin="round"
+            aria-hidden
+          >
+            <path d="M5 12h14M13 5l7 7-7 7" />
+          </svg>
+        </div>
       )}
     </div>
   );
