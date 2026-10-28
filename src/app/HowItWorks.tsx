@@ -59,26 +59,6 @@ export function HowItWorks() {
         ))}
       </div>
 
-      <div className="mt-14 sm:mt-16 flex flex-col items-center gap-4">
-        <span className="text-[11px] uppercase tracking-[0.25em] text-accent-dim">
-          Míralo en acción
-        </span>
-        <video
-          className="w-full max-w-[300px] rounded-2xl border border-border-strong shadow-2xl shadow-black/50"
-          src="/demo-3d-ar.mp4"
-          poster="/demo-3d-ar-poster.jpg"
-          autoPlay
-          muted
-          loop
-          playsInline
-          controls
-          preload="metadata"
-        />
-        <p className="text-sm text-foreground-muted text-center max-w-xs">
-          Un plato real de la carta: girálo en 3D y ponelo sobre tu mesa con la
-          cámara.
-        </p>
-      </div>
     </section>
   );
 }
