@@ -102,8 +102,9 @@ export function DishViewer({ src, poster, alt }: Props) {
     el?.activateAR?.();
   };
 
-  // En Android lanzamos Scene Viewer con un intent URL. Sin fijar el `package`
-  // para que Android muestre el "Abrir con..." y el usuario elija la app AR.
+  // En Android lanzamos Scene Viewer con un intent URL. El `package` es
+  // obligatorio: sin él Android resuelve el VIEW+https contra los navegadores,
+  // el intent no matchea nada y Chrome cae al browser_fallback_url en silencio.
   const openSceneViewer = () => {
     const modelUrl = new URL(src, window.location.href).href;
     const fallback = window.location.href;
@@ -112,6 +113,7 @@ export function DishViewer({ src, poster, alt }: Props) {
         modelUrl,
       )}&mode=ar_preferred&resizable=false&title=${encodeURIComponent(alt)}` +
       `#Intent;scheme=https;` +
+      `package=com.google.android.googlequicksearchbox;` +
       `action=android.intent.action.VIEW;` +
       `S.browser_fallback_url=${encodeURIComponent(fallback)};end;`;
     window.location.href = intent;
