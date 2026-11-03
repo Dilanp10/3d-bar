@@ -2,7 +2,7 @@ import Link from "next/link";
 import { createClient } from "@/lib/supabase/server";
 import { isAdminEmail } from "@/lib/auth/admin-email";
 import { LogoutButton } from "./LogoutButton";
-import { SignupsWarning } from "./SignupsWarning";
+import { AdminEmailWarning } from "./AdminEmailWarning";
 
 export default async function AdminLayout({
   children,
@@ -66,7 +66,7 @@ export default async function AdminLayout({
         </div>
       </nav>
       <main className="flex-1 max-w-5xl mx-auto w-full px-4 sm:px-6 py-6">
-        <SignupsWarning />
+        <AdminEmailWarning />
         {children}
       </main>
     </div>
